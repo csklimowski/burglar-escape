@@ -14,7 +14,23 @@ export class LoadScene extends Phaser.Scene {
         // this.load.bitmapFont('normal', 'font/font.png', 'font/font.fnt');
         // this.load.bitmapFont('outline', 'font/font-outline.png', 'font/font-outline.fnt');
 
-        // this.load.image('submit', 'img/submit.png');
+        this.load.image('1-1', 'assets/test room/1.jpg');
+        this.load.image('1-2', 'assets/test room/2.jpg');
+        this.load.image('1-3', 'assets/test room/3.jpg');
+        this.load.image('1-4', 'assets/test room/4.jpg');
+
+        this.load.image('1-4a', 'assets/test room/close up monkey.jpg');
+        this.load.image('1-4b', 'assets/test room/monkeygone.jpg');
+
+
+        this.load.image('inv-bar', 'assets/inv-bar.png');
+        this.load.image('inv-bg', 'assets/inv-bg.png');
+        this.load.image('inv-monkey', 'assets/test room/monkeyinventory.png');
+
+        this.load.image('cursor-click', 'assets/cursors/click.png');
+        this.load.image('cursor-look', 'assets/cursors/look.png');
+        this.load.image('cursor-back', 'assets/cursors/back.png');
+
         // this.load.spritesheet('speak-button', 'img/speak-button.png', {
         //     frameWidth: 144,
         //     frameHeight: 100
