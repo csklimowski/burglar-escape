@@ -25,6 +25,14 @@ export class LoadScene extends Phaser.Scene {
 
         this.load.image('inv-bar', 'assets/inv-bar.png');
         this.load.image('inv-bg', 'assets/inv-bg.png');
+        this.load.spritesheet('inv-inspect', 'assets/inv-inspect.png', {
+            frameWidth: 500,
+            frameHeight: 80
+        });
+        this.load.spritesheet('inv-put-away', 'assets/inv-put-away.png', {
+            frameWidth: 500,
+            frameHeight: 80
+        });
         this.load.image('inv-monkey', 'assets/test room/monkeyinventory.png');
 
         this.load.image('cursor-click', 'assets/cursors/click.png');

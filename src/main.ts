@@ -1,94 +1,7 @@
 
 import {rooms} from './rooms';
 import { Dialogue } from './dialogue';
-
-const items = {
-    'monkey': {
-        id: 'monkey',
-        small: () => 'inv-monkey',
-        inspect: () => 'inv-monkey'
-    }
-}
-
-interface ItemDefinition {
-    id: string;
-    small: Function;
-    inspect: Function;
-    interactibles?: Function;
-}
-
-class InventoryItem extends Phaser.GameObjects.Container {
-
-    inspectButton: Phaser.GameObjects.Image;
-    image: Phaser.GameObjects.Image;
-    item: ItemDefinition;
-
-    constructor(scene: Phaser.Scene, x: number, y: number,
-            item: ItemDefinition) {
-        super(scene, x, y);
-        scene.add.existing(this);
-        this.item = item;
-        this.image = scene.add.image(0, 0, item.small());
-        
-        this.add(this.image);
-        
-        this.image.setInteractive();
-        this.image.on(Phaser.Input.Events.POINTER_DOWN, (p, x, y, event) => {
-            console.log(event);
-            event.stopPropagation();
-            // @ts-ignore
-            this.parentContainer.clickItem(this);
-        });
-    }
-}
-
-
-export class Inventory extends Phaser.GameObjects.Container {
-
-    area: Phaser.GameObjects.Image;
-    inspecting: Phaser.GameObjects.Image;
-
-    constructor(scene: Phaser.Scene) {
-        super(scene);
-        this.area = scene.add.image(640, 670, 'inv-bar');
-        scene.add.existing(this);
-    }
-
-    addItem(id) {
-        let ii = new InventoryItem(
-            this.scene,
-            290 + 100*this.length,
-            670,
-            items[id]
-        );
-
-        this.add(ii);
-    }
-
-    clickItem(ii: InventoryItem) {
-
-        
-        ii.setAlpha(0);
-        // @ts-ignore
-        this.scene.holding = ii;
-        // @ts-ignore
-        this.scene.cursor.setTexture(ii.image.texture)
-    }
-
-    returnItem(ii: InventoryItem) {
-        ii.setAlpha(1);
-
-        // @ts-ignore
-        this.scene.holding = null;
-        // @ts-ignore
-        this.scene.cursor.setTexture('cursor-click');
-    }
-
-    removeItem(ii: InventoryItem) {
-        ii.destroy();
-
-    }
-}
+import { Inventory, InventoryItem } from './inventory';
 
 
 export class MainScene extends Phaser.Scene {
@@ -151,6 +64,11 @@ export class MainScene extends Phaser.Scene {
     }
 
     onClick() {
+
+        if (this.inventory.inspecting) {
+            return;
+        }
+
         if (this.holding) {
             this.inventory.returnItem(this.holding);
             return;
@@ -190,7 +108,9 @@ export class MainScene extends Phaser.Scene {
             this.input.activePointer.worldX, this.input.activePointer.worldY
         );
 
-        if (!this.holding) {
+
+
+        if (!this.holding && !this.inventory.inspecting) {
             this.cursor.setTexture('cursor-click');
             if (this.room.clickAreas) {
                 for (let area of this.room.clickAreas) {
