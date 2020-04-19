@@ -13,7 +13,7 @@ export class InventoryItem extends Phaser.GameObjects.Container {
         scene.add.existing(this);
 
         this.item = item;
-        this.image = scene.add.image(0, 0, item.small());
+        this.image = scene.add.image(0, 0, item.small);
         
         this.add(this.image);
         
@@ -57,7 +57,7 @@ export class Inventory extends Phaser.GameObjects.Container {
         this.inspectArea.on(Phaser.Input.Events.POINTER_DOWN, (p, x, y, event) => {
             event.stopPropagation();
             if (this.scene.holding) {
-                this.inspectHeldItem(this.scene.holding);
+                this.inspectHeldItem();
             }
         }, this);
         this.inspectArea.setVisible(false);
@@ -78,10 +78,6 @@ export class Inventory extends Phaser.GameObjects.Container {
             }
         }, this);
         this.putAwayArea.setVisible(false);
-
-
-
-        console.log("HELLO???");
         
         this.inspectArea
         scene.add.existing(this);
@@ -98,7 +94,13 @@ export class Inventory extends Phaser.GameObjects.Container {
         this.add(ii);
     }
 
-    inspectHeldItem(ii) {
+    inspectHeldItem() {
+
+        let ii = this.scene.holding;
+        if (this.inspecting) {
+            this.inspecting.inspect.object.setVisible(false);
+        }
+
         this.returnItem(ii);
         if (!ii.item.inspect.object) {
             ii.item.inspect.object = ii.item.inspect.init(this.scene);
@@ -139,7 +141,15 @@ export class Inventory extends Phaser.GameObjects.Container {
         this.inspectArea.setVisible(false);
     }
 
-    removeItem(ii: InventoryItem) {
-        ii.destroy();
+    destroyHeldItem() {
+        this.scene.holding.destroy();        
+        this.scene.cursor.setTexture('cursor-click');
+        this.scene.inventory.inspectArea.setVisible(false);
+        this.scene.holding = null;
+
+        for (let i = 0; i < this.length; i++) {
+            // @ts-ignore
+            this.getAt(i).setPosition(290 + 100*i, 670);
+        }
     }
 }

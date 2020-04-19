@@ -20,6 +20,8 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('1-3', 'assets/test room/3.jpg');
         this.load.image('1-4', 'assets/test room/4.jpg');
 
+        this.load.image('1-1a', 'assets/minesweeper-test.png');
+
         this.load.image('1-4a', 'assets/test room/close up monkey.jpg');
         this.load.image('1-4b', 'assets/test room/monkeygone.jpg');
 
@@ -34,7 +36,11 @@ export class LoadScene extends Phaser.Scene {
             frameWidth: 500,
             frameHeight: 80
         });
+
+
         this.load.image('inv-monkey', 'assets/test room/monkeyinventory.png');
+
+        this.load.image('inv-flag', 'assets/flag.png');
 
         this.load.image('cursor-click', 'assets/cursors/click.png');
         this.load.image('cursor-look', 'assets/cursors/look.png');

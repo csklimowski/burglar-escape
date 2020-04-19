@@ -2,7 +2,7 @@ import { MainScene } from "./main";
 
 export interface ItemDefinition {
     id: string;
-    small: Function;
+    small: string;
     inspect?: {
         init: Function,
         object?: any;
@@ -16,11 +16,9 @@ export class InputText extends Phaser.GameObjects.Container {
     instructions: Phaser.GameObjects.BitmapText;
     labelStr: string;
     inputStr: string;
-    correctStr: string;
-    onCorrect: Function;
-    onWrong: Function;
+    onSubmit: Function;
 
-    constructor(scene: Phaser.Scene, label, correctStr, onCorrect, onWrong) {
+    constructor(scene: Phaser.Scene, label, onSubmit) {
         super(scene);
         scene.add.existing(this);
 
@@ -30,11 +28,9 @@ export class InputText extends Phaser.GameObjects.Container {
         this.add(this.instructions);
         this.setVisible(false);
 
-        this.onCorrect = onCorrect;
-        this.onWrong = onWrong;
+        this.onSubmit = onSubmit;
         
         this.labelStr = label;
-        this.correctStr = correctStr;
         this.inputStr = '';
 
         this.scene.input.keyboard.on(Phaser.Input.Keyboard.Events.ANY_KEY_DOWN, this.letterTyped, this);
@@ -44,11 +40,7 @@ export class InputText extends Phaser.GameObjects.Container {
         if (!this.visible) return;
 
         if (event.key === 'Enter') {
-            if (this.inputStr === this.correctStr) {
-                this.onCorrect();
-            } else {
-                this.onWrong();
-            }
+            this.onSubmit(this.inputStr);
             this.setVisible(false);
         }
 
@@ -79,10 +71,12 @@ export class Screwdriver extends Phaser.GameObjects.Container {
 
         this.itemImage.setInteractive();
 
-        this.inputText = new InputText(scene, 'Admin password: ', 'puzzl3z', () => {
-            this.itemImage.setTint(0xff0000);
-        }, () => {
-            this.scene.showDialogue(['Incorrect password.']);
+        this.inputText = new InputText(scene, 'Admin password: ', input => {
+            if (input === 'puzzl3z') {
+                this.itemImage.setTint(0xff0000);
+            } else {
+                this.scene.showDialogue(['Incorrect password.']);
+            }
         });
         this.add(this.inputText);
 
@@ -95,13 +89,41 @@ export class Screwdriver extends Phaser.GameObjects.Container {
     }
 }
 
+
 export const items = {
     'monkey': {
         id: 'monkey',
-        small: () => 'inv-monkey',
+        small: 'inv-monkey',
         inspect: {
-            init: scene => new Screwdriver(scene),
-            object: null
+            init: scene => new Screwdriver(scene)
         }
-    }
+    },
+    'flag-1': {
+        id: 'flag-1',
+        small: 'inv-flag',
+        inspect: {
+            init: scene => scene.add.image(640, 360, 'inv-flag')
+        }
+    },
+    'flag-2': {
+        id: 'flag-2',
+        small: 'inv-flag',
+        inspect: {
+            init: scene => scene.add.image(640, 360, 'inv-flag')
+        }
+    },
+    'flag-3': {
+        id: 'flag-3',
+        small: 'inv-flag',
+        inspect: {
+            init: scene => scene.add.image(640, 360, 'inv-flag')
+        }
+    },
+    'flag-4': {
+        id: 'flag-4',
+        small: 'inv-flag',
+        inspect: {
+            init: scene => scene.add.image(640, 360, 'inv-flag')
+        }
+    },
 }

@@ -14,13 +14,15 @@ export class MainScene extends Phaser.Scene {
     
 
     room: any;
-    progress: any;
+    progress: Set<string>;
     bg: Phaser.GameObjects.Image;
     cursor: Phaser.GameObjects.Image;
     inventory: Inventory;
     dialogue: Dialogue;
     inDialogue: boolean = false;
     holding: InventoryItem = null;
+    inspectedObjects: Phaser.GameObjects.Container;
+    interactiveObjects: Phaser.GameObjects.Container;
 
     create() {
         
@@ -28,9 +30,15 @@ export class MainScene extends Phaser.Scene {
         this.room = rooms['1-north'];
         this.progress = new Set();
         this.bg = this.add.image(640, 360, this.room.bg(this.progress));
-    
+
+        this.interactiveObjects = this.add.container(0, 0);
 
         this.inventory = new Inventory(this);
+
+        this.inspectedObjects = this.add.container(0, 0);
+
+        this.dialogue = new Dialogue(this);
+
         
         this.cursor = this.add.image(
             this.input.activePointer.worldX, this.input.activePointer.worldY,
@@ -41,10 +49,11 @@ export class MainScene extends Phaser.Scene {
         this.input.on(Phaser.Input.Events.POINTER_DOWN, this.onClick, this);
         this.input.on(Phaser.Input.Events.POINTER_MOVE, this.onMouseMove, this);
 
-        this.dialogue = new Dialogue(this);
-
-        // @ts-ignore
-        this.inputText = new InputText(this, 'Test', 'hi');
+    
+        this.inventory.addItem('flag-1');
+        this.inventory.addItem('flag-2');
+        this.inventory.addItem('flag-3');
+        this.inventory.addItem('flag-4');
         // if (currentLevel === part1) {
         //     this.add.image(640, 360, 'store');
         // }
@@ -71,6 +80,9 @@ export class MainScene extends Phaser.Scene {
 
     onClick() {
 
+        let x = this.input.activePointer.worldX;
+        let y = this.input.activePointer.worldY
+
         if (this.inDialogue) {
             if (this.dialogue.done && this.dialogue.lineQueue.length === 0) {
                 this.inDialogue = false;
@@ -85,29 +97,47 @@ export class MainScene extends Phaser.Scene {
             return;
         }
 
+        if (this.room.interaction) {
+            if (Phaser.Geom.Rectangle.Contains(
+                this.room.interaction.bounds, x, y)
+            ) {
+                this.room.interaction.object.onClick(x, y, this.holding);
+                this.bg.setTexture(this.room.bg(this.progress));
+                return;
+            }
+        }
+
         if (this.holding) {
             this.inventory.returnItem(this.holding);
             return;
         }
 
         
-        if (this.room.clickAreas) {
-            for (let area of this.room.clickAreas) {
+        if (this.room.viewAreas) {
+            for (let area of this.room.viewAreas) {
                 if (Phaser.Geom.Rectangle.Contains(
-                    area.bounds, this.input.activePointer.worldX, this.input.activePointer.worldY)
+                    area.bounds, x, y)
                 ) {
+                    if (this.room.interaction) {
+                        this.room.interaction.object.setVisible(false);
+                    }
                     this.room = rooms[area.goTo];
                     this.bg.setTexture(this.room.bg(this.progress));
+                    if (this.room.interaction) {
+                        if (!this.room.interaction.object) {
+                            this.room.interaction.object = this.room.interaction.init(this);
+                        }
+                        this.room.interaction.object.setVisible(true);
+                    }
                     return;
                 }
-                this.input.activePointer.worldX;
             }
         }
 
         if (this.room.items) {
             for (let item of this.room.items) {
                 if (!this.progress.has(item.get) && Phaser.Geom.Rectangle.Contains(
-                    item.bounds, this.input.activePointer.worldX, this.input.activePointer.worldY)
+                    item.bounds, x, y)
                 ) {
                     this.progress.add(item.get);
                     this.inventory.addItem(item.get);
@@ -116,6 +146,8 @@ export class MainScene extends Phaser.Scene {
                 }
             }
         }
+
+        
     }
 
     onMouseMove() {
@@ -124,12 +156,10 @@ export class MainScene extends Phaser.Scene {
             this.input.activePointer.worldX, this.input.activePointer.worldY
         );
 
-
-
         if (!this.holding && !this.inventory.inspecting && !this.inDialogue) {
             this.cursor.setTexture('cursor-click');
-            if (this.room.clickAreas) {
-                for (let area of this.room.clickAreas) {
+            if (this.room.viewAreas) {
+                for (let area of this.room.viewAreas) {
                     if (Phaser.Geom.Rectangle.Contains(
                         area.bounds, this.input.activePointer.worldX, this.input.activePointer.worldY)
                     ) {
