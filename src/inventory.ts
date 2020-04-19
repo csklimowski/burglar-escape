@@ -11,6 +11,7 @@ export class InventoryItem extends Phaser.GameObjects.Container {
             item: ItemDefinition) {
         super(scene, x, y);
         scene.add.existing(this);
+
         this.item = item;
         this.image = scene.add.image(0, 0, item.small());
         
@@ -101,6 +102,7 @@ export class Inventory extends Phaser.GameObjects.Container {
         this.returnItem(ii);
         if (!ii.item.inspect.object) {
             ii.item.inspect.object = ii.item.inspect.init(this.scene);
+            
         }
         this.inspecting = ii.item;
         ii.item.inspect.object.setVisible(true);
@@ -126,6 +128,7 @@ export class Inventory extends Phaser.GameObjects.Container {
         // @ts-ignore
         this.scene.cursor.setTexture(ii.image.texture);
 
+        this.putAwayArea.setVisible(false);
         this.inspectArea.setVisible(true);
     }
 

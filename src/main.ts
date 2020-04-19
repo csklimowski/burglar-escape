@@ -2,7 +2,7 @@
 import {rooms} from './rooms';
 import { Dialogue } from './dialogue';
 import { Inventory, InventoryItem } from './inventory';
-
+import { InputText } from './items';
 
 export class MainScene extends Phaser.Scene {
 
@@ -19,6 +19,7 @@ export class MainScene extends Phaser.Scene {
     cursor: Phaser.GameObjects.Image;
     inventory: Inventory;
     dialogue: Dialogue;
+    inDialogue: boolean = false;
     holding: InventoryItem = null;
 
     create() {
@@ -39,6 +40,11 @@ export class MainScene extends Phaser.Scene {
 
         this.input.on(Phaser.Input.Events.POINTER_DOWN, this.onClick, this);
         this.input.on(Phaser.Input.Events.POINTER_MOVE, this.onMouseMove, this);
+
+        this.dialogue = new Dialogue(this);
+
+        // @ts-ignore
+        this.inputText = new InputText(this, 'Test', 'hi');
         // if (currentLevel === part1) {
         //     this.add.image(640, 360, 'store');
         // }
@@ -64,6 +70,16 @@ export class MainScene extends Phaser.Scene {
     }
 
     onClick() {
+
+        if (this.inDialogue) {
+            if (this.dialogue.done && this.dialogue.lineQueue.length === 0) {
+                this.inDialogue = false;
+                this.dialogue.clear();
+            } else {
+                this.dialogue.nextLine();
+            }
+            return;
+        }
 
         if (this.inventory.inspecting) {
             return;
@@ -110,7 +126,7 @@ export class MainScene extends Phaser.Scene {
 
 
 
-        if (!this.holding && !this.inventory.inspecting) {
+        if (!this.holding && !this.inventory.inspecting && !this.inDialogue) {
             this.cursor.setTexture('cursor-click');
             if (this.room.clickAreas) {
                 for (let area of this.room.clickAreas) {
@@ -128,6 +144,11 @@ export class MainScene extends Phaser.Scene {
 
     getItem(id: string) {
 
+    }
+
+    showDialogue(lines: string[], onFinish?: Function) {
+        this.inDialogue = true;
+        this.dialogue.display(lines, onFinish);
     }
 
     update(time: number, delta: number) {

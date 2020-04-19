@@ -11,7 +11,8 @@ export class LoadScene extends Phaser.Scene {
         // this.load.audio('gasp', 'sfx/gasp!.ogg');
         // this.load.audio('music', 'songs/music.mp3');
         
-        // this.load.bitmapFont('normal', 'font/font.png', 'font/font.fnt');
+        this.load.bitmapFont('normal', 'font/font.png', 'font/font.fnt');
+        this.load.bitmapFont('console', 'font/console.png', 'font/console.fnt');
         // this.load.bitmapFont('outline', 'font/font-outline.png', 'font/font-outline.fnt');
 
         this.load.image('1-1', 'assets/test room/1.jpg');
