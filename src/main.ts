@@ -25,57 +25,33 @@ export class MainScene extends Phaser.Scene {
     interactiveObjects: Phaser.GameObjects.Container;
 
     create() {
-        
-        this.input.setDefaultCursor('none');
-        this.room = rooms['1-north'];
         this.progress = new Set();
+        this.input.setDefaultCursor('none');
+        this.room = rooms['1-south-tv'];
+
         this.bg = this.add.image(640, 360, this.room.bg(this.progress));
-
         this.interactiveObjects = this.add.container(0, 0);
-
         this.inventory = new Inventory(this);
-
         this.inspectedObjects = this.add.container(0, 0);
-
         this.dialogue = new Dialogue(this);
 
-        
         this.cursor = this.add.image(
             this.input.activePointer.worldX, this.input.activePointer.worldY,
             'cursor-click'
         );
         this.cursor.setOrigin(0, 0);
 
+        
+        this.room.interaction.object = this.room.interaction.init(this);
+        this.interactiveObjects.add(this.room.interaction.object);
+
         this.input.on(Phaser.Input.Events.POINTER_DOWN, this.onClick, this);
         this.input.on(Phaser.Input.Events.POINTER_MOVE, this.onMouseMove, this);
 
-    
         this.inventory.addItem('flag-1');
         this.inventory.addItem('flag-2');
         this.inventory.addItem('flag-3');
         this.inventory.addItem('flag-4');
-        // if (currentLevel === part1) {
-        //     this.add.image(640, 360, 'store');
-        // }
-        // if (currentLevel === part2) {
-        //     this.add.image(640, 360, 'house');
-        //     this.music = this.sound.add('music', {
-        //         volume: 0.1,
-        //         loop: true
-        //     });
-        //     this.music.play();
-        // }
-        // this.charSprite = this.add.sprite(640, 360, 'blank');
-
-        // this.dialogue = new Dialogue(this, this.onDialogueFinish, 100);
-        // this.editor = new Editor(this, this.onSubmit);
-
-        // this.curtain = this.add.image(640, 360, 'curtain');
-        // this.fadeIn = true;
-        
-        // this.levelIndex = 0;
-        // this.sequence = currentLevel[this.levelIndex].start;
-        // this.sequenceIndex = 1;
     }
 
     onClick() {
@@ -101,7 +77,9 @@ export class MainScene extends Phaser.Scene {
             if (Phaser.Geom.Rectangle.Contains(
                 this.room.interaction.bounds, x, y)
             ) {
-                this.room.interaction.object.onClick(x, y, this.holding);
+                if (this.room.interaction.object.onClick) {
+                    this.room.interaction.object.onClick(x, y, this.holding);
+                }
                 this.bg.setTexture(this.room.bg(this.progress));
                 return;
             }
@@ -126,6 +104,7 @@ export class MainScene extends Phaser.Scene {
                     if (this.room.interaction) {
                         if (!this.room.interaction.object) {
                             this.room.interaction.object = this.room.interaction.init(this);
+                            this.interactiveObjects.add(this.room.interaction.object);
                         }
                         this.room.interaction.object.setVisible(true);
                     }
@@ -176,9 +155,9 @@ export class MainScene extends Phaser.Scene {
 
     }
 
-    showDialogue(lines: string[], onFinish?: Function) {
+    showDialogue(lines: string[], onStart?: Function, onFinish?: Function) {
         this.inDialogue = true;
-        this.dialogue.display(lines, onFinish);
+        this.dialogue.display(lines, onStart, onFinish);
     }
 
     update(time: number, delta: number) {

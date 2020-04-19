@@ -9,6 +9,7 @@ export class Dialogue extends Phaser.GameObjects.BitmapText {
     done: boolean = true;
 
     onFinish: Function;
+    onStart: Function;
 
     constructor(scene: Phaser.Scene) {
         super(scene, 200, 100, 'normal', '', 50);
@@ -27,8 +28,9 @@ export class Dialogue extends Phaser.GameObjects.BitmapText {
         this.done = true;
     }
 
-    display(lines: string[], onFinish?: Function,) {
+    display(lines: string[], onStart?: Function, onFinish?: Function) {
         this.setText('');
+        this.onStart = onStart;
         this.onFinish = onFinish;
         this.lineQueue = lines;
         this.finalText = this.lineQueue.shift();
@@ -41,6 +43,7 @@ export class Dialogue extends Phaser.GameObjects.BitmapText {
             this.finalText = this.lineQueue.shift();
             this.charIndex = 0;
             this.done = false;
+            if (this.onStart) this.onStart();
         } else {
             this.charIndex = this.finalText.length-1;
         }

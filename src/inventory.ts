@@ -104,7 +104,7 @@ export class Inventory extends Phaser.GameObjects.Container {
         this.returnItem(ii);
         if (!ii.item.inspect.object) {
             ii.item.inspect.object = ii.item.inspect.init(this.scene);
-            
+            this.scene.inspectedObjects.add(ii.item.inspect.object);
         }
         this.inspecting = ii.item;
         ii.item.inspect.object.setVisible(true);

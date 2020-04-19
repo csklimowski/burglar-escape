@@ -46,6 +46,14 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('cursor-look', 'assets/cursors/look.png');
         this.load.image('cursor-back', 'assets/cursors/back.png');
 
+
+        this.load.image('master-talk1-1', 'assets/master/talk 1/talk10001.png');
+        this.load.image('master-talk1-2', 'assets/master/talk 1/talk10002.png');
+        this.load.image('master-talk1-3', 'assets/master/talk 1/talk10003.png');
+        this.load.image('master-talk1-4', 'assets/master/talk 1/talk10004.png');
+
+        this.load.image('master-idle', 'assets/master/default.png');
+
         // this.load.spritesheet('speak-button', 'img/speak-button.png', {
         //     frameWidth: 144,
         //     frameHeight: 100
@@ -53,38 +61,40 @@ export class LoadScene extends Phaser.Scene {
     }
 
     create() {
-        // this.anims.create({
-        //     key: 'clerk-talk',
-        //     frames: [
-        //         {
-        //             frame: null,
-        //             key: 'clerk-talk0001',
-        //         },
-        //         {
-        //             frame: null,
-        //             key: 'clerk-talk0002',
-        //         },
-        //         {
-        //             frame: null,
-        //             key: 'clerk-talk0003',
-        //         },
-        //         {
-        //             frame: null,
-        //             key: 'clerk-talk0004',
-        //         }
-        //     ],
-        //     frameRate: 10,
-        //     repeat: -1
-        // });
-        // this.anims.create({
-        //     key: 'clerk-idle',
-        //     frames: [
-        //         {
-        //             frame: null,
-        //             key: 'clerk-talk0004'
-        //         }
-        //     ]
-        // });
+        this.anims.create({
+            key: 'master-talk1',
+            frames: [
+                {
+                    frame: null,
+                    key: 'master-talk1-1',
+                },
+                {
+                    frame: null,
+                    key: 'master-talk1-2',
+                },
+                {
+                    frame: null,
+                    key: 'master-talk1-3',
+                },
+                {
+                    frame: null,
+                    key: 'master-talk1-4',
+                }
+            ],
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'master-idle',
+            frames: [
+                {
+                    frame: null,
+                    key: 'master-idle'
+                }
+            ]
+        });
+        
         this.scene.start('main');
     }
 }

@@ -44,8 +44,29 @@ export const rooms = {
             {
                 bounds: new Phaser.Geom.Rectangle(1180, 0, 100, 620),
                 goTo: '1-west'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(540, 260, 200, 200),
+                goTo: '1-south-tv'
             }
         ]
+    },
+    '1-south-tv': {
+        bg: () => '1-1a',
+        viewAreas: [
+            {
+                bounds: new Phaser.Geom.Rectangle(0, 0, 1280, 620),
+                goTo: '1-south',
+                cursor: 'cursor-back'
+            }
+        ],
+        interaction: {
+            bounds: new Phaser.Geom.Rectangle(0, 0, 0, 0),
+            init: scene => new MasterTV(scene, [
+                "If you can escape this box...",
+                "Then I will not call the cops."
+            ])
+        }
     },
     '1-west': {
         bg: () => '1-4',
@@ -96,6 +117,31 @@ export const rooms = {
         }
     }
 }
+
+
+
+
+
+export class MasterTV extends Phaser.GameObjects.Container {
+
+    master: Phaser.GameObjects.Sprite;
+    scene: MainScene;
+
+    constructor(scene: Phaser.Scene, dialogue: string[]) {
+        super(scene);
+
+        this.master = scene.add.sprite(640, 360, 'master-idle');
+        this.add(this.master);
+        this.master.anims.play('master-talk1');
+
+        this.scene.showDialogue(dialogue, () => {
+            this.master.anims.play('master-talk1');
+        }, () => {
+            this.master.anims.play('master-idle');
+        })
+    }
+}
+
 
 export class Minesweeper extends Phaser.GameObjects.Container {
 
