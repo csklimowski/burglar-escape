@@ -22,6 +22,11 @@ export const rooms = {
             {
                 bounds: new Phaser.Geom.Rectangle(885, 495, 150, 170),
                 goTo: '1-east-plant'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(472, 216, 185, 390),
+                goTo: '2-north',
+                cursor: 'cursor-click'
             }
         ],
         interaction: {
@@ -341,7 +346,208 @@ export const rooms = {
             }
         ]
     },
-    
+    '2-west': {
+        bg: progress => progress.has('door-2') ? '2-3_2' : '2-3',
+        viewAreas: [
+            {
+                bounds: new Phaser.Geom.Rectangle(0, 0, 100, 620),
+                goTo: '2-south'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(100, 0, 1080, 100),
+                goTo: '2-ceiling'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(1180, 0, 100, 620),
+                goTo: '2-north'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(300, 400, 200, 200),
+                goTo: '2-west-computer'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(100, 100, 200, 200),
+                goTo: '2-west-tv'
+            }
+        ],
+        interaction: {
+            enabled: progress => !progress.has('door-2'),
+            bounds: new Phaser.Geom.Rectangle(530, 300, 210, 400),
+            init: (scene: MainScene) => ({
+                onClick: (x, y, holding) => {
+                    // scene.progress.add('door-1');
+                    // scene.inventory.destroyHeldItem();
+                }
+            })
+        }
+    },
+    '2-west-computer': {
+        bg: () => '2-9',
+        viewAreas: [
+            {
+                bounds: new Phaser.Geom.Rectangle(0, 0, 1280, 150),
+                goTo: '2-west',
+                cursor: 'cursor-back'
+            }
+        ],
+        interaction: {
+            enabled: progress => !progress.has('door-2'),
+            bounds: new Phaser.Geom.Rectangle(530, 300, 210, 400),
+            init: (scene: MainScene) => ({
+                onClick: (x, y, holding) => {
+                    // scene.progress.add('door-1');
+                    // scene.inventory.destroyHeldItem();
+                }
+            })
+        }
+    },
+    '2-west-tv': {
+        bg: () => '2-10',
+        viewAreas: [
+            {
+                bounds: new Phaser.Geom.Rectangle(0, 0, 1280, 620),
+                goTo: '2-west',
+                cursor: 'cursor-back'
+            }
+        ],
+        interaction: {
+            enabled: () => true,
+            bounds: new Phaser.Geom.Rectangle(0, 0, 0, 0),
+            init: scene => new MasterTV(scene, [
+                "You thought you'd escaped...",
+                "But the riddles aren't done!",
+                "When it comes to surprises, I am number one."
+            ])
+        }
+    },
+    '2-ceiling': {
+        bg: () => '2-7',
+        viewAreas: [
+            {
+                bounds: new Phaser.Geom.Rectangle(0, 0, 1280, 520),
+                goTo: '2-south',
+                cursor: 'cursor-back'
+            }
+        ]
+    },
+    '2-south': {
+        bg: () => '2-4',
+        viewAreas: [
+            {
+                bounds: new Phaser.Geom.Rectangle(100, 0, 1080, 100),
+                goTo: '2-ceiling'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(0, 0, 100, 620),
+                goTo: '2-east'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(1180, 0, 100, 620),
+                goTo: '2-west'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(445, 310, 175, 330),
+                goTo: '1-south'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(650, 350, 110, 130),
+                goTo: '2-south-safe'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(830, 130, 170, 195),
+                goTo: '2-west-tv'
+            }
+        ]
+    },
+    '2-south-safe': {
+        bg: progress =>  progress.has('glasses') ? '2-6_3' : progress.has('safe') ? '2-6_2' : '2-6',
+        viewAreas: [    
+            {
+                bounds: new Phaser.Geom.Rectangle(0, 0, 1280, 150),
+                goTo: '2-south',
+                cursor: 'cursor-back'
+            }
+        ],
+        items: [
+            {
+                bounds: new Phaser.Geom.Rectangle(430, 465, 315, 140),
+                get: 'glasses',
+                prereq: 'safe'
+            }
+        ],
+        interaction: {
+            enabled: () => progress => !progress.has('safe'),
+            bounds: new Phaser.Geom.Rectangle(0, 0, 0, 0),
+            init: scene => new Safe(scene)
+        }
+    },
+    '2-north': {
+        bg: () => '2-2',
+        viewAreas: [
+            {
+                bounds: new Phaser.Geom.Rectangle(100, 0, 1080, 100),
+                goTo: '2-ceiling'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(0, 0, 100, 620),
+                goTo: '2-west'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(1180, 0, 100, 620),
+                goTo: '2-east'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(440, 250, 390, 210),
+                goTo: '2-north-panel'
+            }
+        ]
+    },
+    '2-north-panel': {
+        bg: () => '2-8',
+        viewAreas: [
+            {
+                bounds: new Phaser.Geom.Rectangle(0, 0, 1280, 200),
+                goTo: '2-north',
+                cursor: 'cursor-back'
+            }
+        ],
+        interaction: {
+            enabled: () => true,
+            bounds: new Phaser.Geom.Rectangle(0, 0, 0, 0),
+            init: scene => new Unfold(scene)
+        }
+    },
+    '2-east': {
+        bg: () => '2-1',
+        viewAreas: [
+            {
+                bounds: new Phaser.Geom.Rectangle(100, 0, 1080, 100),
+                goTo: '2-ceiling'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(0, 0, 100, 620),
+                goTo: '2-north'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(1180, 0, 100, 620),
+                goTo: '2-south'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(450, 200, 375, 320),
+                goTo: '2-east-frame'
+            }
+        ]
+    },
+    '2-east-frame': {
+        bg: () => '2-5',
+        viewAreas: [
+            {
+                bounds: new Phaser.Geom.Rectangle(0, 0, 1280, 620),
+                goTo: '2-east',
+                cursor: 'cursor-back'
+            }
+        ]
+    },
 }
 
 
@@ -353,15 +559,17 @@ export class MasterTV extends Phaser.GameObjects.Container {
     constructor(scene: Phaser.Scene, dialogue: string[]) {
         super(scene);
 
+        this.scene.cursor.setTexture('cursor-click');
+
         this.master = scene.add.sprite(640, 360, 'master-idle1');
         this.add(this.master);
-        this.add(scene.add.image(640, 360, '1-9'));
-        this.master.anims.play('master-talk1');
+        this.add(scene.add.image(640, 360, '2-10'));
+        this.master.anims.play('master-talk2');
 
         this.scene.showDialogue(dialogue, () => {
-            this.master.anims.play('master-talk1');
+            this.master.anims.play('master-talk2');
         }, () => {
-            this.master.anims.play('master-idle1');
+            this.master.anims.play('master-idle2');
         })
     }
 }
@@ -428,6 +636,177 @@ export class Minesweeper extends Phaser.GameObjects.Container {
                 this.flaggedSpaces[space] = null;
             }
             //this.flaggedSpaces[space] = 
+        }
+    }
+}
+
+export class NumberCycle extends Phaser.GameObjects.BitmapText {
+    constructor(scene, x, y) {
+        super(scene, x, y, 'norma', '0');
+        scene.add.existing(this);
+
+        this.setInteractive();
+        this.on(Phaser.Input.Events.POINTER_DOWN, () => {
+
+        });
+    }
+}
+
+
+export class Unfold extends Phaser.GameObjects.Container {
+    scene: MainScene;
+
+    constructor(scene: Phaser.Scene) {
+        super(scene);
+        scene.add.existing(this);
+
+        let numbers = [
+            {
+                box: scene.add.rectangle(370, 380, 100, 100),
+                text: scene.add.bitmapText(350, 330, 'normal', '0', 80),
+                number: 0
+            },
+            {
+                box: scene.add.rectangle(700, 520, 100, 100),
+                text: scene.add.bitmapText(690, 470, 'normal', '0', 80),
+                number: 0
+            },
+            {
+                box: scene.add.rectangle(890, 380, 100, 100),
+                text: scene.add.bitmapText(870, 330, 'normal', '0', 80),
+                number: 0
+            }
+        ];
+
+        let clickNumber = num => {
+            numbers[num].number = (numbers[num].number + 1) % 10;
+            numbers[num].text.setText('' + numbers[num].number);
+
+            if (numbers[0].number === 7 &&
+                numbers[1].number === 1 &&
+                numbers[2].number === 4) {
+                
+                this.scene.progress.add('unwrap');
+                numbers[0].box.destroy();
+                numbers[1].box.destroy();
+                numbers[2].box.destroy();
+                numbers[0].text.destroy();
+                numbers[1].text.destroy();
+                numbers[2].text.destroy();
+            } 
+        }
+
+        numbers[0].box.setInteractive();
+        numbers[1].box.setInteractive();
+        numbers[2].box.setInteractive();
+
+        this.add(numbers[0].box);
+        this.add(numbers[1].box);
+        this.add(numbers[2].box);
+
+        this.add(numbers[0].text);
+        this.add(numbers[1].text);
+        this.add(numbers[2].text);
+
+        numbers[0].box.on(Phaser.Input.Events.POINTER_DOWN, () => clickNumber(0));
+        numbers[1].box.on(Phaser.Input.Events.POINTER_DOWN, () => clickNumber(1));
+        numbers[2].box.on(Phaser.Input.Events.POINTER_DOWN, () => clickNumber(2));
+    }
+}
+
+
+export class Safe extends Phaser.GameObjects.Container {
+    scene: MainScene;
+
+    constructor(scene: Phaser.Scene) {
+        super(scene);
+        scene.add.existing(this);
+
+        let symbolCycle = [
+            'button-heart',
+            'button-pac',
+            'button-rupee',
+            'button-hash'
+        ];
+
+        let symbols = [
+            {
+                index: 0,
+                image: scene.add.image(430, 255, 'button-heart')
+            },
+            {
+                index: 0,
+                image: scene.add.image(430, 330, 'button-heart')
+            },
+            {
+                index: 0,
+                image: scene.add.image(430, 410, 'button-heart')
+            },
+            {
+                index: 0,
+                image: scene.add.image(430, 490, 'button-heart')
+            }
+        ];
+
+        let clickSymbol = num => {
+            symbols[num].index = (symbols[num].index + 1) % 4;
+            symbols[num].image.setTexture(symbolCycle[symbols[num].index]);
+
+            // if (symbols[0].index === 1 && symbols[1].index === 0 && symbols[2].index === 2 && symbols[3].index === 3 &&
+            //     colors[0].index === 2 && colors[1].index === 1 && colors[2].index === 0 && colors[3].index === 3) {
+
+                this.scene.progress.add('safe');
+                this.scene.bg.setTexture('2-6_2');
+
+                for (let i = 0; i < 4; i++) {
+                    symbols[i].image.destroy();
+                    colors[i].image.destroy();
+                }
+            // }
+        }
+
+        let colorCycle = [
+            'button-green',
+            'button-purple',
+            'button-red',
+            'button-yellow'
+        ];
+
+        let colors = [
+            {
+                index: 0,
+                image: scene.add.image(750, 215, 'button-green')
+            },
+            {
+                index: 0,
+                image: scene.add.image(750, 295, 'button-green')
+            },
+            {
+                index: 0,
+                image: scene.add.image(750, 365, 'button-green')
+            },
+            {
+                index: 0,
+                image: scene.add.image(750, 445, 'button-green')
+            }
+        ];
+
+        let clickColor = num => {
+            colors[num].index = (colors[num].index + 1) % 4;
+            colors[num].image.setTexture(colorCycle[colors[num].index]);
+        }
+
+        for (let i = 0; i < 4; i++) {
+            this.add(symbols[i].image);
+            symbols[i].image.setInteractive();
+            symbols[i].image.on(Phaser.Input.Events.POINTER_DOWN, () => clickSymbol(i));
+            symbols[i].image.setScale(0.6);
+            symbols[i].image.setTint(0x000000);
+
+            this.add(colors[i].image);
+            colors[i].image.setInteractive();
+            colors[i].image.on(Phaser.Input.Events.POINTER_DOWN, () => clickColor(i));
+            colors[i].image.setScale(0.5);
         }
     }
 }

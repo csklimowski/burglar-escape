@@ -112,9 +112,17 @@ export class Inventory extends Phaser.GameObjects.Container {
         this.bg.setVisible(true);
         this.inspectArea.setVisible(false);
         this.putAwayArea.setVisible(true);
+
+        if (this.inspecting.id === 'glasses' && this.scene.bg.texture.key === '2-7') {
+            this.bg.setVisible(false);
+            this.scene.bg.setTexture('2-7_2');
+        }
     }
 
     stopInspecting() {
+        if (this.inspecting.id === 'glasses' && this.scene.bg.texture.key === '2-7_2') {
+            this.scene.bg.setTexture('2-7');
+        }
         this.putAwayArea.setVisible(false);
         this.bg.setVisible(false);
         this.inspecting.inspect.object.setVisible(false);

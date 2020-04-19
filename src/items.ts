@@ -97,28 +97,6 @@ export class Screwdriver extends Phaser.GameObjects.Container {
 }
 
 
-export class NumberCycle extends Phaser.GameObjects.BitmapText {
-    constructor(scene, x, y) {
-        super(scene, x, y, 'norma', '0');
-        scene.add.existing(this);
-
-        this.setInteractive();
-        this.on(Phaser.Input.Events.POINTER_DOWN, () => {
-
-        })
-    }
-}
-
-
-export class Unfold extends Phaser.GameObjects.Container {
-    scene: MainScene;
-
-    constructor(scene) {
-        super(scene);
-        scene.add.existing(this);
-    }
-}
-
 
 
 export const items = {
@@ -178,4 +156,18 @@ export const items = {
             init: scene => scene.add.image(640, 360, 'flag')
         }
     },
+    'glasses': {
+        id: 'glasses',
+        small: 'inv-glasses',
+        inspect: {
+            init: scene => scene.add.rectangle(640, 360, 1280, 720, 0x00ff00, 0.2)
+        }
+    },
+    'paper': {
+        id: 'paper',
+        small: 'inv-paper',
+        inspect: {
+            init: scene => scene.add.image(640, 360, 'paper')
+        }
+    }
 }

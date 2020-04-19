@@ -28,7 +28,7 @@ export class MainScene extends Phaser.Scene {
     create() {
         this.progress = new Set();
         this.input.setDefaultCursor('none');
-        this.room = rooms['1-west-tv'];
+        this.room = rooms['2-north-panel'];
 
         this.bg = this.add.image(640, 360, this.room.bg(this.progress));
         this.invBg = this.add.container(0, 0);
