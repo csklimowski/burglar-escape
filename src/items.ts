@@ -66,64 +66,116 @@ export class Screwdriver extends Phaser.GameObjects.Container {
         super(scene);
         scene.add.existing(this);
 
-        this.itemImage = scene.add.image(640, 360, 'inv-monkey');
+        this.itemImage = scene.add.image(640, 360, 'screwdriver-far');
         this.add(this.itemImage);
 
         this.itemImage.setInteractive();
 
-        this.inputText = new InputText(scene, 'Admin password: ', input => {
+        this.inputText = new InputText(scene, 'Enter: ', input => {
             if (input === 'puzzl3z') {
-                this.itemImage.setTint(0xff0000);
+                this.itemImage.setTexture('screwdriver-loosey');
+                this.scene.progress.add('screwdriver-admin');
             } else {
-                this.scene.showDialogue(['Incorrect password.']);
+                this.scene.showDialogue(["I guess that wasn't it..."]);
             }
         });
         this.add(this.inputText);
 
         // this.itemImage.setInteractive(true);
         this.itemImage.on(Phaser.Input.Events.POINTER_DOWN, (a, x, y, event) => {
-            event.stopPropagation();
-            console.log('what');
-            this.inputText.setVisible(true);
+            if (this.itemImage.texture.key === 'screwdriver-far') {
+                this.itemImage.setTexture('screwdriver-close');
+            } else if (this.itemImage.texture.key === 'screwdriver-close') {
+                this.itemImage.setTexture('screwdriver-tighty');
+            } else if (this.itemImage.texture.key === 'screwdriver-tighty' || this.itemImage.texture.key === ('screwdriver-enter-password')) {
+                this.itemImage.setTexture('screwdriver-enter-password');
+                this.inputText.inputStr = '';
+                this.inputText.setVisible(true);
+            }
         });
     }
 }
 
 
+export class NumberCycle extends Phaser.GameObjects.BitmapText {
+    constructor(scene, x, y) {
+        super(scene, x, y, 'norma', '0');
+        scene.add.existing(this);
+
+        this.setInteractive();
+        this.on(Phaser.Input.Events.POINTER_DOWN, () => {
+
+        })
+    }
+}
+
+
+export class Unfold extends Phaser.GameObjects.Container {
+    scene: MainScene;
+
+    constructor(scene) {
+        super(scene);
+        scene.add.existing(this);
+    }
+}
+
+
+
 export const items = {
-    'monkey': {
-        id: 'monkey',
-        small: 'inv-monkey',
+    'screwdriver': {
+        id: 'screwdriver',
+        small: 'inv-screwdriver',
         inspect: {
             init: scene => new Screwdriver(scene)
+        }
+    },
+    'good-snake': {
+        id: 'good-snake',
+        small: 'inv-good-snake',
+        inspect: {
+            init: scene => scene.add.image(640, 360, 'good-snake')
+        }
+    },
+    'bad-snake': {
+        id: 'bad-snake',
+        small: 'inv-bad-snake',
+        inspect: {
+            init: scene => scene.add.image(640, 360, 'bad-snake')
+        }
+    },
+    'key': {
+        id: 'key',
+        small: 'inv-key',
+        inspect: {
+            init: scene => scene.add.image(640, 360, 'key')
         }
     },
     'flag-1': {
         id: 'flag-1',
         small: 'inv-flag',
         inspect: {
-            init: scene => scene.add.image(640, 360, 'inv-flag')
+            init: scene => scene.add.image(640, 360, 'flag')
         }
     },
     'flag-2': {
         id: 'flag-2',
         small: 'inv-flag',
         inspect: {
-            init: scene => scene.add.image(640, 360, 'inv-flag')
+            init: scene => scene.add.image(640, 360, 'flag')
         }
     },
     'flag-3': {
         id: 'flag-3',
         small: 'inv-flag',
         inspect: {
-            init: scene => scene.add.image(640, 360, 'inv-flag')
+            init: scene => scene.add.image(640, 360, 'flag')
         }
     },
     'flag-4': {
         id: 'flag-4',
         small: 'inv-flag',
         inspect: {
-            init: scene => scene.add.image(640, 360, 'inv-flag')
+            init: scene => scene.add.image(640, 360, 'flag')
         }
     },
 }

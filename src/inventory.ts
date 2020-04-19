@@ -42,6 +42,7 @@ export class Inventory extends Phaser.GameObjects.Container {
         this.area = scene.add.image(640, 670, 'inv-bar');
         
         this.bg = scene.add.image(640, 360, 'inv-bg');
+        this.scene.invBg.add(this.bg);
         this.bg.setVisible(false);
         
 

@@ -23,16 +23,18 @@ export class MainScene extends Phaser.Scene {
     holding: InventoryItem = null;
     inspectedObjects: Phaser.GameObjects.Container;
     interactiveObjects: Phaser.GameObjects.Container;
+    invBg: Phaser.GameObjects.Container;
 
     create() {
         this.progress = new Set();
         this.input.setDefaultCursor('none');
-        this.room = rooms['1-south-tv'];
+        this.room = rooms['1-west-tv'];
 
         this.bg = this.add.image(640, 360, this.room.bg(this.progress));
+        this.invBg = this.add.container(0, 0);
         this.interactiveObjects = this.add.container(0, 0);
-        this.inventory = new Inventory(this);
         this.inspectedObjects = this.add.container(0, 0);
+        this.inventory = new Inventory(this);
         this.dialogue = new Dialogue(this);
 
         this.cursor = this.add.image(
@@ -48,10 +50,8 @@ export class MainScene extends Phaser.Scene {
         this.input.on(Phaser.Input.Events.POINTER_DOWN, this.onClick, this);
         this.input.on(Phaser.Input.Events.POINTER_MOVE, this.onMouseMove, this);
 
-        this.inventory.addItem('flag-1');
-        this.inventory.addItem('flag-2');
-        this.inventory.addItem('flag-3');
-        this.inventory.addItem('flag-4');
+
+        this.inventory.addItem('key');
     }
 
     onClick() {
@@ -73,7 +73,7 @@ export class MainScene extends Phaser.Scene {
             return;
         }
 
-        if (this.room.interaction) {
+        if (this.room.interaction && this.room.interaction.enabled(this.progress)) {
             if (Phaser.Geom.Rectangle.Contains(
                 this.room.interaction.bounds, x, y)
             ) {
@@ -96,7 +96,7 @@ export class MainScene extends Phaser.Scene {
                 if (Phaser.Geom.Rectangle.Contains(
                     area.bounds, x, y)
                 ) {
-                    if (this.room.interaction) {
+                    if (this.room.interaction && this.room.interaction.object.setVisible) {
                         this.room.interaction.object.setVisible(false);
                     }
                     this.room = rooms[area.goTo];
@@ -104,9 +104,13 @@ export class MainScene extends Phaser.Scene {
                     if (this.room.interaction) {
                         if (!this.room.interaction.object) {
                             this.room.interaction.object = this.room.interaction.init(this);
-                            this.interactiveObjects.add(this.room.interaction.object);
+                            if (this.room.interaction.object.setVisible) {
+                                this.interactiveObjects.add(this.room.interaction.object);
+                            }
                         }
-                        this.room.interaction.object.setVisible(true);
+                        if (this.room.interaction.object.setVisible) {
+                            this.room.interaction.object.setVisible(true);
+                        }
                     }
                     return;
                 }
@@ -118,6 +122,9 @@ export class MainScene extends Phaser.Scene {
                 if (!this.progress.has(item.get) && Phaser.Geom.Rectangle.Contains(
                     item.bounds, x, y)
                 ) {
+                    if (item.prereq && !this.progress.has(item.prereq)) {
+                        return;
+                    }
                     this.progress.add(item.get);
                     this.inventory.addItem(item.get);
                     this.bg.setTexture(this.room.bg(this.progress));
