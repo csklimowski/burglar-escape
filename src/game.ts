@@ -1,5 +1,6 @@
-import { MainScene } from './main';
+import { MainScene, EndScene } from './main';
 import { LoadScene } from './load';
+import { IntroScene } from './main';
 
 // document.addEventListener("keydown", function (e) {
 //     if (e.keyCode == 8) { // backspace
@@ -15,7 +16,9 @@ const game = new Phaser.Game({
     parent: 'game',
     scene: [
         LoadScene,
-        MainScene
+        MainScene,
+        IntroScene,
+        EndScene
     ],
     scale: {
         mode: Phaser.Scale.FIT

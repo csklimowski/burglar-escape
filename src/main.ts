@@ -2,7 +2,75 @@
 import {rooms} from './rooms';
 import { Dialogue } from './dialogue';
 import { Inventory, InventoryItem } from './inventory';
-import { InputText } from './items';
+
+
+export class IntroScene extends Phaser.Scene {
+    constructor() {
+        super({
+            key: 'intro'
+        });
+    }
+
+    index: number = 0;
+    panels: string[] = [
+        'gn-1',
+        'gn-2',
+        'gn-3',
+        'gn-4',
+        'gn-5',
+        'gn-6'
+    ];
+    image: Phaser.GameObjects.Image;
+
+    create() {
+        this.image = this.add.image(640, 360, 'gn-1');
+
+        this.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
+            this.index += 1;
+            if (this.index > 5) {
+                this.scene.start('main')
+            } else {
+                this.image.setTexture(this.panels[this.index]);
+            }
+        }, this);
+    }
+}
+
+export class EndScene extends Phaser.Scene {
+    constructor() {
+        super({
+            key: 'end'
+        });
+    }
+
+    index: number = 0;
+    panels: string[] = [
+        'gn-end1',
+        'gn-end2',
+        'gn-end3',
+        'gn-end4',
+        'gn-end5',
+        'gn-end1',
+        'gn-end6'
+    ];
+    image: Phaser.GameObjects.Image;
+
+    create() {
+        
+        this.input.setDefaultCursor('auto');
+        this.image = this.add.image(640, 360, 'gn-end1');
+
+        this.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
+            this.index += 1;
+            if (this.index > 6) {
+                this.add.rectangle(640, 360, 1280, 720, 0x000000);
+                this.add.bitmapText(300, 300, 'normal', 'Thanks for playing!');
+            } else {
+                this.image.setTexture(this.panels[this.index]);
+            }
+        }, this);
+    }
+}
 
 export class MainScene extends Phaser.Scene {
 
@@ -28,7 +96,7 @@ export class MainScene extends Phaser.Scene {
     create() {
         this.progress = new Set();
         this.input.setDefaultCursor('none');
-        this.room = rooms['2-north-panel'];
+        this.room = rooms['1-west-tv'];
 
         this.bg = this.add.image(640, 360, this.room.bg(this.progress));
         this.invBg = this.add.container(0, 0);
@@ -49,9 +117,6 @@ export class MainScene extends Phaser.Scene {
 
         this.input.on(Phaser.Input.Events.POINTER_DOWN, this.onClick, this);
         this.input.on(Phaser.Input.Events.POINTER_MOVE, this.onMouseMove, this);
-
-
-        this.inventory.addItem('key');
     }
 
     onClick() {

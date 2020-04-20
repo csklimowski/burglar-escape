@@ -97,6 +97,7 @@ export class Inventory extends Phaser.GameObjects.Container {
 
     inspectHeldItem() {
 
+
         let ii = this.scene.holding;
         if (this.inspecting) {
             this.inspecting.inspect.object.setVisible(false);
@@ -140,7 +141,10 @@ export class Inventory extends Phaser.GameObjects.Container {
         this.scene.cursor.setTexture(ii.image.texture);
 
         this.putAwayArea.setVisible(false);
-        this.inspectArea.setVisible(true);
+        
+        if (!ii.item.id.startsWith('flag')) {
+            this.inspectArea.setVisible(true);
+        }
     }
 
     returnItem(ii: InventoryItem) {

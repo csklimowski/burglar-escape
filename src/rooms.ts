@@ -1,4 +1,4 @@
-import { ItemDefinition } from "./items";
+import { ItemDefinition, InputText } from "./items";
 import { MainScene } from "./main";
 import { InventoryItem } from "./inventory";
 
@@ -94,6 +94,10 @@ export const rooms = {
             {
                 bounds: new Phaser.Geom.Rectangle(460, 400, 290, 150),
                 goTo: '1-east-shelf-minesweeper'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(883, 190, 216, 326),
+                goTo: '1-east-shelf-bottles'
             }
         ]
     },
@@ -118,8 +122,8 @@ export const rooms = {
         ]
     },
     '1-east-shelf-minesweeper': {
-        bg: progress => progress.has('key') ? '1-6_4' : 
-            progress.has('minesweeper') ? '1-6_3' : '1-6_2',
+        bg: progress => progress.has('key') ? '1-6_5' :
+            progress.has('minesweeper') ? '1-6_4' : '1-6_3',
         viewAreas: [
             {
                 bounds: new Phaser.Geom.Rectangle(0, 0, 1280, 120),
@@ -144,8 +148,18 @@ export const rooms = {
             init: scene => new Minesweeper(scene)
         }
     },
+    '1-east-shelf-bottles': {
+        bg: () => '1-15',
+        viewAreas: [
+            {
+                bounds: new Phaser.Geom.Rectangle(0, 0, 1280, 640),
+                goTo: '1-east-shelf',
+                cursor: 'cursor-back'
+            }
+        ]
+    },
     '1-south': {
-        bg: progress => progress.has('flag-1') ? '1-3_2' : '1-3',
+        bg: () => '1-3',
         viewAreas: [
             {
                 bounds: new Phaser.Geom.Rectangle(0, 0, 100, 620),
@@ -290,12 +304,13 @@ export const rooms = {
             },
             {
                 bounds: new Phaser.Geom.Rectangle(600, 290, 440, 260),
-                goTo: '1-west-couch-cushion'
+                goTo: '1-west-couch-cushion',
+                cursor: 'cursor-click'
             }
         ]
     },
     '1-west-couch-cushion': {
-        bg: progress => progress.has('flag-2') ? '1-12_4' : '1-12_2',
+        bg: progress => progress.has('flag-2') ? '1-12_3' : '1-12_2',
         viewAreas: [
             {
                 bounds: new Phaser.Geom.Rectangle(0, 0, 1280, 200),
@@ -391,14 +406,9 @@ export const rooms = {
             }
         ],
         interaction: {
-            enabled: progress => !progress.has('door-2'),
-            bounds: new Phaser.Geom.Rectangle(530, 300, 210, 400),
-            init: (scene: MainScene) => ({
-                onClick: (x, y, holding) => {
-                    // scene.progress.add('door-1');
-                    // scene.inventory.destroyHeldItem();
-                }
-            })
+            enabled: () => true,
+            bounds: new Phaser.Geom.Rectangle(370, 220, 480, 465),
+            init: (scene: MainScene) => new Computer(scene)
         }
     },
     '2-west-tv': {
@@ -434,7 +444,7 @@ export const rooms = {
         bg: () => '2-4',
         viewAreas: [
             {
-                bounds: new Phaser.Geom.Rectangle(100, 0, 1080, 100),
+                bounds: new Phaser.Geom.Rectangle(100, 0, 650, 100),
                 goTo: '2-ceiling'
             },
             {
@@ -446,15 +456,15 @@ export const rooms = {
                 goTo: '2-west'
             },
             {
-                bounds: new Phaser.Geom.Rectangle(445, 310, 175, 330),
+                bounds: new Phaser.Geom.Rectangle(445, 200, 175, 330),
                 goTo: '1-south'
             },
             {
-                bounds: new Phaser.Geom.Rectangle(650, 350, 110, 130),
+                bounds: new Phaser.Geom.Rectangle(650, 230, 100, 130),
                 goTo: '2-south-safe'
             },
             {
-                bounds: new Phaser.Geom.Rectangle(830, 130, 170, 195),
+                bounds: new Phaser.Geom.Rectangle(830, 0, 170, 190),
                 goTo: '2-west-tv'
             }
         ]
@@ -503,7 +513,7 @@ export const rooms = {
         ]
     },
     '2-north-panel': {
-        bg: () => '2-8',
+        bg: progress => progress.has('paper') ? '2-8_4' : progress.has('unfold') ? '2-8_3' : '2-8',
         viewAreas: [
             {
                 bounds: new Phaser.Geom.Rectangle(0, 0, 1280, 200),
@@ -512,10 +522,17 @@ export const rooms = {
             }
         ],
         interaction: {
-            enabled: () => true,
+            enabled: progress => !progress.has('unfold'),
             bounds: new Phaser.Geom.Rectangle(0, 0, 0, 0),
             init: scene => new Unfold(scene)
-        }
+        },
+        items: [
+            {
+                bounds: new Phaser.Geom.Rectangle(465, 260, 425, 200),
+                get: 'paper',
+                prereq: 'unfold'
+            }
+        ],
     },
     '2-east': {
         bg: () => '2-1',
@@ -588,7 +605,7 @@ export class Minesweeper extends Phaser.GameObjects.Container {
         this.flaggedSpaces = {
             9: {
                 item: 'flag-4',
-                image: this.scene.add.image(590, 410, 'inv-flag')
+                image: this.scene.add.image(590, 460, 'inv-flag')
             }
         };
         this.add(this.flaggedSpaces[9].image);
@@ -597,8 +614,8 @@ export class Minesweeper extends Phaser.GameObjects.Container {
     onClick(x: number, y: number, holding: InventoryItem) {
         if (holding && holding.item.id.startsWith('flag'))  {
             let col = Math.floor((x - 390)/100);
-            let row = Math.floor((y - 110)/100);
-            let cy = 210 + 100*row;
+            let row = Math.floor((y - 150)/100);
+            let cy = 250 + 100*row;
             let cx = 490 + 100*col;
             let space = col + 4*row;
 
@@ -628,7 +645,7 @@ export class Minesweeper extends Phaser.GameObjects.Container {
 
         if (!holding) {
             let col = Math.floor((x - 440)/100);
-            let row = Math.floor((y - 160)/100);
+            let row = Math.floor((y - 200)/100);
             let space = col + 4*row;
             if (this.flaggedSpaces[space]) {
                 this.scene.inventory.addItem(this.flaggedSpaces[space].item);
@@ -686,7 +703,8 @@ export class Unfold extends Phaser.GameObjects.Container {
                 numbers[1].number === 1 &&
                 numbers[2].number === 4) {
                 
-                this.scene.progress.add('unwrap');
+                this.scene.progress.add('unfold');
+                this.scene.bg.setTexture('2-8_3');
                 numbers[0].box.destroy();
                 numbers[1].box.destroy();
                 numbers[2].box.destroy();
@@ -752,8 +770,8 @@ export class Safe extends Phaser.GameObjects.Container {
             symbols[num].index = (symbols[num].index + 1) % 4;
             symbols[num].image.setTexture(symbolCycle[symbols[num].index]);
 
-            // if (symbols[0].index === 1 && symbols[1].index === 0 && symbols[2].index === 2 && symbols[3].index === 3 &&
-            //     colors[0].index === 2 && colors[1].index === 1 && colors[2].index === 0 && colors[3].index === 3) {
+            if (symbols[0].index === 1 && symbols[1].index === 0 && symbols[2].index === 2 && symbols[3].index === 3 &&
+                colors[0].index === 2 && colors[1].index === 1 && colors[2].index === 0 && colors[3].index === 3) {
 
                 this.scene.progress.add('safe');
                 this.scene.bg.setTexture('2-6_2');
@@ -762,7 +780,7 @@ export class Safe extends Phaser.GameObjects.Container {
                     symbols[i].image.destroy();
                     colors[i].image.destroy();
                 }
-            // }
+            }
         }
 
         let colorCycle = [
@@ -809,4 +827,30 @@ export class Safe extends Phaser.GameObjects.Container {
             colors[i].image.setScale(0.5);
         }
     }
+}
+
+
+export class Computer extends Phaser.GameObjects.Container {
+
+    inputText: InputText;
+    scene: MainScene;
+
+    constructor(scene: Phaser.Scene) {
+        super(scene);
+        scene.add.existing(this);
+
+        this.inputText = new InputText(scene, 'Enter password: ', input => {
+            if (input.toLowerCase() === 'lessonlearned') {
+                this.scene.progress.add('computer');
+                this.scene.scene.start('end');
+            } else {
+                this.scene.showDialogue(["Wrong!"]);
+            }
+        });
+        this.add(this.inputText);
+    }
+
+    onClick(x, y, holding) {
+        this.inputText.setVisible(true);
+    } 
 }

@@ -48,6 +48,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('1-6_2', 'assets/rooms final/room1/6_2.png');
         this.load.image('1-6_3', 'assets/rooms final/room1/6_3.png');
         this.load.image('1-6_4', 'assets/rooms final/room1/6_4.png');
+        this.load.image('1-6_5', 'assets/rooms final/room1/6_5.png');
         this.load.image('1-7', 'assets/rooms final/room1/7.png');
         this.load.image('1-7_2', 'assets/rooms final/room1/7_2.png');
         this.load.image('1-7_3', 'assets/rooms final/room1/7_3.png');
@@ -65,6 +66,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('1-13', 'assets/rooms final/room1/13.png');
         this.load.image('1-13_2', 'assets/rooms final/room1/13_2.png');
         this.load.image('1-14', 'assets/rooms final/room1/14.png');
+        this.load.image('1-15', 'assets/rooms final/room1/15.png');
 
         this.load.image('2-1', 'assets/rooms final/room2/1.png');
         this.load.image('2-2', 'assets/rooms final/room2/2.png');
@@ -78,16 +80,13 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('2-7', 'assets/rooms final/room2/7.png');
         this.load.image('2-7_2', 'assets/rooms final/room2/7_2.png');
         this.load.image('2-8', 'assets/rooms final/room2/8.png');
+        this.load.image('2-8_2', 'assets/rooms final/room2/8_2.png');
+        this.load.image('2-8_3', 'assets/rooms final/room2/8_3.png');
+        this.load.image('2-8_4', 'assets/rooms final/room2/8_4.png');
         this.load.image('2-9', 'assets/rooms final/room2/9.png');
         this.load.image('2-10', 'assets/rooms final/room2/10.png');
         this.load.image('2-11', 'assets/rooms final/room2/11.png');
         this.load.image('2-11_2', 'assets/rooms final/room2/11_2.png');
-
-
-
-        /*
-            
-        */
 
         // INVENTORY
         this.load.image('inv-bar', 'assets/inv-bar.png');
@@ -158,8 +157,26 @@ export class LoadScene extends Phaser.Scene {
 
         this.load.image('button-hash', 'assets/buttons/hash.png');
         this.load.image('button-pac', 'assets/buttons/pac.png');
-        this.load.image('button-rupee', 'assets/buttons/rupee.png');
+        this.load.image('button-rupee', 'assets/buttons/arrow.png');
         this.load.image('button-heart', 'assets/buttons/heart.png');
+
+
+
+        // GRAPHIC NOVEL
+
+        this.load.image('gn-1', 'assets/graphic novel/1.png');
+        this.load.image('gn-2', 'assets/graphic novel/2.png');
+        this.load.image('gn-3', 'assets/graphic novel/3.png');
+        this.load.image('gn-4', 'assets/graphic novel/4.png');
+        this.load.image('gn-5', 'assets/graphic novel/5.png');
+        this.load.image('gn-6', 'assets/graphic novel/6.png');
+
+        this.load.image('gn-end1', 'assets/graphic novel/end_1.png');
+        this.load.image('gn-end2', 'assets/graphic novel/end_2.png');
+        this.load.image('gn-end3', 'assets/graphic novel/end_3.png');
+        this.load.image('gn-end4', 'assets/graphic novel/end_4.png');
+        this.load.image('gn-end5', 'assets/graphic novel/end_5.png');
+        this.load.image('gn-end6', 'assets/graphic novel/end_6.png');
     }
 
     create() {
@@ -231,6 +248,6 @@ export class LoadScene extends Phaser.Scene {
             ]
         });
 
-        this.scene.start('main');
+        this.scene.start('intro');
     }
 }
