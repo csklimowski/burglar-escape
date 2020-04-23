@@ -466,6 +466,35 @@ export const rooms = {
             {
                 bounds: new Phaser.Geom.Rectangle(830, 0, 170, 190),
                 goTo: '2-west-tv'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(720, 510, 140, 70),
+                goTo: '2-south-floor'
+            }
+        ]
+    },
+    '2-south-floor': {
+        bg: () => '2-11',
+        viewAreas: [
+            {
+                bounds: new Phaser.Geom.Rectangle(0, 0, 1280, 150),
+                goTo: '2-south',
+                cursor: 'cursor-back'
+            },
+            {
+                bounds: new Phaser.Geom.Rectangle(315, 360, 520, 300),
+                goTo: '2-south-floor-uncovered',
+                cursor: 'cursor-click'
+            }
+        ]
+    },
+    '2-south-floor-uncovered': {
+        bg: () => '2-11_2',
+        viewAreas: [
+            {
+                bounds: new Phaser.Geom.Rectangle(0, 0, 1280, 150),
+                goTo: '2-south',
+                cursor: 'cursor-back'
             }
         ]
     },
@@ -692,6 +721,11 @@ export class Unfold extends Phaser.GameObjects.Container {
                 box: scene.add.rectangle(890, 380, 100, 100),
                 text: scene.add.bitmapText(870, 330, 'normal', '0', 80),
                 number: 0
+            },
+            {
+                box: scene.add.rectangle(700, 380, 100, 100),
+                text: scene.add.bitmapText(690, 330, 'normal', '0', 80),
+                number: 0
             }
         ];
 
@@ -701,34 +735,41 @@ export class Unfold extends Phaser.GameObjects.Container {
 
             if (numbers[0].number === 7 &&
                 numbers[1].number === 1 &&
-                numbers[2].number === 4) {
+                numbers[2].number === 4 &&
+                numbers[3].number === 8) {
                 
                 this.scene.progress.add('unfold');
                 this.scene.bg.setTexture('2-8_3');
                 numbers[0].box.destroy();
                 numbers[1].box.destroy();
                 numbers[2].box.destroy();
+                numbers[3].box.destroy();
                 numbers[0].text.destroy();
                 numbers[1].text.destroy();
                 numbers[2].text.destroy();
+                numbers[3].text.destroy();
             } 
         }
 
         numbers[0].box.setInteractive();
         numbers[1].box.setInteractive();
         numbers[2].box.setInteractive();
+        numbers[3].box.setInteractive();
 
         this.add(numbers[0].box);
         this.add(numbers[1].box);
         this.add(numbers[2].box);
+        this.add(numbers[3].box);
 
         this.add(numbers[0].text);
         this.add(numbers[1].text);
         this.add(numbers[2].text);
+        this.add(numbers[3].text);
 
         numbers[0].box.on(Phaser.Input.Events.POINTER_DOWN, () => clickNumber(0));
         numbers[1].box.on(Phaser.Input.Events.POINTER_DOWN, () => clickNumber(1));
         numbers[2].box.on(Phaser.Input.Events.POINTER_DOWN, () => clickNumber(2));
+        numbers[3].box.on(Phaser.Input.Events.POINTER_DOWN, () => clickNumber(3));
     }
 }
 

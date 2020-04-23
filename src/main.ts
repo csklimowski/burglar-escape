@@ -112,8 +112,12 @@ export class MainScene extends Phaser.Scene {
         this.cursor.setOrigin(0, 0);
 
         
+
+        
         this.room.interaction.object = this.room.interaction.init(this);
         this.interactiveObjects.add(this.room.interaction.object);
+
+        this.inventory.addItem('key');
 
         this.input.on(Phaser.Input.Events.POINTER_DOWN, this.onClick, this);
         this.input.on(Phaser.Input.Events.POINTER_MOVE, this.onMouseMove, this);

@@ -101,15 +101,15 @@ export class LoadScene extends Phaser.Scene {
         });
 
         // ITEMS
-        this.load.image('screwdriver-far', 'assets/preview/props/screwdriver/screwdriver_far.png');
-        this.load.image('screwdriver-close', 'assets/preview/props/screwdriver/screwdriver_close.png');
-        this.load.image('screwdriver-enter-password', 'assets/preview/props/screwdriver/screwdriver_enteradminpassword_on.png');
-        this.load.image('screwdriver-loosey', 'assets/preview/props/screwdriver/screwdriver_openloose.png');
-        this.load.image('screwdriver-tighty', 'assets/preview/props/screwdriver/screwdriver_opentight.png');
-        this.load.image('inv-screwdriver', 'assets/preview/props/screwdriver/inv-screwdriver.png')
+        this.load.image('screwdriver-far', 'assets/items final/screwdriver/inspect.png');
+        this.load.image('screwdriver-close', 'assets/items final/screwdriver/closed.png');
+        this.load.image('screwdriver-enter-password', 'assets/items final/screwdriver/open_enterpassword.png');
+        this.load.image('screwdriver-loosey', 'assets/items final/screwdriver/open_loosey.png');
+        this.load.image('screwdriver-tighty', 'assets/items final/screwdriver/open_tighty.png');
+        this.load.image('inv-screwdriver', 'assets/items final/screwdriver/icon.png');
 
-        this.load.image('good-snake', 'assets/snakes/snake-good.png');
-        this.load.image('bad-snake', 'assets/snakes/snake-bad.png');
+        this.load.image('good-snake', 'assets/items final/snakes/snake good inspect.png');
+        this.load.image('bad-snake', 'assets/items final/snakes/snake bad inspect.png');
         this.load.image('inv-good-snake', 'assets/snakes/inv-snake-good.png');
         this.load.image('inv-bad-snake', 'assets/snakes/inv-snake-bad.png');
         this.load.image('snake-1', 'assets/snakes/snake-1.png');
@@ -118,13 +118,13 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('snake-4', 'assets/snakes/snake-4.png');
         // this.load.image('inv-monkey', 'assets/test room/monkeyinventory.png');
 
-        this.load.image('flag', 'assets/preview/props/flag/flag.png');
-        this.load.image('inv-flag', 'assets/preview/props/flag/inv-flag.png');
+        this.load.image('flag', 'assets/items final/flag/inspect.png');
+        this.load.image('flag-flat', 'assets/items final/flag/game_piece.png')
+        this.load.image('inv-flag', 'assets/items final/flag/icon.png');
 
-        this.load.image('key', 'assets/preview/props/key/key.png');
-        this.load.image('inv-key', 'assets/preview/props/key/inv-key.png');
-
-        this.load.image('glasses-tint', 'assets/items final/glasses/tint.png');
+        this.load.image('key', 'assets/items final/key/inspect.png');
+        this.load.image('inv-key', 'assets/items final/key/icon.png');
+        
         this.load.image('inv-glasses', 'assets/items final/glasses/icon.png');
 
         this.load.image('paper', 'assets/items final/paper/inspect.png');
@@ -248,6 +248,6 @@ export class LoadScene extends Phaser.Scene {
             ]
         });
 
-        this.scene.start('intro');
+        this.scene.start('main');
     }
 }
