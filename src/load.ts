@@ -116,6 +116,8 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('snake-2', 'assets/snakes/snake-2.png');
         this.load.image('snake-3', 'assets/snakes/snake-3.png');
         this.load.image('snake-4', 'assets/snakes/snake-4.png');
+        this.load.image('snake-5', 'assets/snakes/snake-5.png');
+        this.load.image('snake-6', 'assets/snakes/snake-6.png');
         // this.load.image('inv-monkey', 'assets/test room/monkeyinventory.png');
 
         this.load.image('flag', 'assets/items final/flag/inspect.png');
@@ -124,7 +126,7 @@ export class LoadScene extends Phaser.Scene {
 
         this.load.image('key', 'assets/items final/key/inspect.png');
         this.load.image('inv-key', 'assets/items final/key/icon.png');
-        
+
         this.load.image('inv-glasses', 'assets/items final/glasses/icon.png');
 
         this.load.image('paper', 'assets/items final/paper/inspect.png');

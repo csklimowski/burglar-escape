@@ -110,9 +110,6 @@ export class MainScene extends Phaser.Scene {
             'cursor-click'
         );
         this.cursor.setOrigin(0, 0);
-
-        
-
         
         this.room.interaction.object = this.room.interaction.init(this);
         this.interactiveObjects.add(this.room.interaction.object);
@@ -143,9 +140,7 @@ export class MainScene extends Phaser.Scene {
         }
 
         if (this.room.interaction && this.room.interaction.enabled(this.progress)) {
-            if (Phaser.Geom.Rectangle.Contains(
-                this.room.interaction.bounds, x, y)
-            ) {
+            if (this.inBounds(x, y, this.room.interaction.bounds)) {
                 if (this.room.interaction.object.onClick) {
                     this.room.interaction.object.onClick(x, y, this.holding);
                 }
@@ -162,9 +157,7 @@ export class MainScene extends Phaser.Scene {
         
         if (this.room.viewAreas) {
             for (let area of this.room.viewAreas) {
-                if (Phaser.Geom.Rectangle.Contains(
-                    area.bounds, x, y)
-                ) {
+                if (this.inBounds(x, y, area.bounds)) {
                     if (this.room.interaction && this.room.interaction.object.setVisible) {
                         this.room.interaction.object.setVisible(false);
                     }
@@ -188,9 +181,7 @@ export class MainScene extends Phaser.Scene {
 
         if (this.room.items) {
             for (let item of this.room.items) {
-                if (!this.progress.has(item.get) && Phaser.Geom.Rectangle.Contains(
-                    item.bounds, x, y)
-                ) {
+                if (!this.progress.has(item.get) && this.inBounds(x, y, item.bounds)) {
                     if (item.prereq && !this.progress.has(item.prereq)) {
                         return;
                     }
@@ -206,7 +197,26 @@ export class MainScene extends Phaser.Scene {
     }
 
     onMouseMove() {
+        let x = this.input.activePointer.worldX;
+        let y = this.input.activePointer.worldY;
         // console.log(this.input.activePointer.worldX, this.input.activePointer.worldY)
+        this.cursor.setPosition(x, y);
+
+        if (!this.holding && !this.inventory.inspecting && !this.inDialogue) {
+            this.cursor.setTexture('cursor-click');
+            if (this.room.viewAreas) {
+                for (let area of this.room.viewAreas) {
+                    if (this.inBounds(x, y, area.bounds)) {
+                        this.cursor.setTexture(area.cursor || 'cursor-look');
+                        break;
+                    }
+                }
+            }
+        }
+        
+    }
+
+    updateCursor() {
         this.cursor.setPosition(
             this.input.activePointer.worldX, this.input.activePointer.worldY
         );
@@ -224,11 +234,11 @@ export class MainScene extends Phaser.Scene {
                 }
             }
         }
-        
     }
 
-    getItem(id: string) {
-
+    inBounds(x: number, y: number, bounds: number[]) {
+        return x > bounds[0] && x < bounds[0] + bounds[2] &&
+            y > bounds[1] && y < bounds[1] + bounds[3];
     }
 
     showDialogue(lines: string[], onStart?: Function, onFinish?: Function) {

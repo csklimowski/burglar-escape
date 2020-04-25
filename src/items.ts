@@ -1,4 +1,5 @@
 import { MainScene } from "./main";
+import { InputText } from './interactibles';
 
 export interface ItemDefinition {
     id: string;
@@ -9,52 +10,6 @@ export interface ItemDefinition {
     };
 }
 
-
-export class InputText extends Phaser.GameObjects.Container {
-
-    text: Phaser.GameObjects.BitmapText;
-    instructions: Phaser.GameObjects.BitmapText;
-    labelStr: string;
-    inputStr: string;
-    onSubmit: Function;
-
-    constructor(scene: Phaser.Scene, label, onSubmit) {
-        super(scene);
-        scene.add.existing(this);
-
-        this.text = scene.add.bitmapText(100, 200, 'console', label + '_');
-        this.instructions = scene.add.bitmapText(100, 300, 'console', 'Press ENTER to submit.')
-        this.add(this.text);
-        this.add(this.instructions);
-        this.setVisible(false);
-
-        this.onSubmit = onSubmit;
-        
-        this.labelStr = label;
-        this.inputStr = '';
-
-        this.scene.input.keyboard.on(Phaser.Input.Keyboard.Events.ANY_KEY_DOWN, this.letterTyped, this);
-    }
-
-    letterTyped(event) {
-        if (!this.visible) return;
-
-        if (event.key === 'Enter') {
-            this.onSubmit(this.inputStr);
-            this.setVisible(false);
-        }
-
-        if (event.key === 'Backspace') {
-            event.preventDefault();
-            this.inputStr = this.inputStr.substr(0, this.inputStr.length-1);
-        }
-            
-        if (/^[\w ]$/.test(event.key)) {
-            this.inputStr += event.key;
-        }
-        this.text.setText(this.labelStr + this.inputStr + '_');
-    }
-}
 
 export class Screwdriver extends Phaser.GameObjects.Container {
 
