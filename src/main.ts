@@ -110,14 +110,23 @@ export class MainScene extends Phaser.Scene {
             'cursor-click'
         );
         this.cursor.setOrigin(0, 0);
+
+        if (this.room.interactibles) {
+            for (let interactible of this.room.interactibles) {
+                if (!interactible.object) {
+                    interactible.object = interactible.init(this);
+                    if (interactible.object.setVisible) {
+                        this.interactiveObjects.add(interactible.object);
+                    }
+                }
+            }
+        }
         
-        this.room.interaction.object = this.room.interaction.init(this);
-        this.interactiveObjects.add(this.room.interaction.object);
 
         this.inventory.addItem('key');
 
         this.input.on(Phaser.Input.Events.POINTER_DOWN, this.onClick, this);
-        this.input.on(Phaser.Input.Events.POINTER_MOVE, this.onMouseMove, this);
+        this.input.on(Phaser.Input.Events.POINTER_MOVE, this.updateCursor, this);
     }
 
     onClick() {
@@ -132,25 +141,44 @@ export class MainScene extends Phaser.Scene {
             } else {
                 this.dialogue.nextLine();
             }
+            this.updateCursor();
             return;
         }
 
         if (this.inventory.inspecting) {
+            this.updateCursor();
             return;
         }
 
-        if (this.room.interaction && this.room.interaction.enabled(this.progress)) {
-            if (this.inBounds(x, y, this.room.interaction.bounds)) {
-                if (this.room.interaction.object.onClick) {
-                    this.room.interaction.object.onClick(x, y, this.holding);
+
+        if (this.room.interactibles) {
+            for (let interactible of this.room.interactibles) {
+                if (interactible.enabled(this.progress)) {
+                    if (this.inBounds(x, y, interactible.bounds)) {
+                        if (interactible.object.onClick) {
+                            interactible.object.onClick(x, y, this.holding);
+                        }
+                        this.bg.setTexture(this.room.bg(this.progress));
+                        this.updateCursor();
+                        return;
+                    }
                 }
-                this.bg.setTexture(this.room.bg(this.progress));
-                return;
             }
         }
 
+        // if (this.room.interaction && this.room.interaction.enabled(this.progress)) {
+        //     if (this.inBounds(x, y, this.room.interaction.bounds)) {
+        //         if (this.room.interaction.object.onClick) {
+        //             this.room.interaction.object.onClick(x, y, this.holding);
+        //         }
+        //         this.bg.setTexture(this.room.bg(this.progress));
+        //         return;
+        //     }
+        // }
+
         if (this.holding) {
             this.inventory.returnItem(this.holding);
+            this.updateCursor();
             return;
         }
 
@@ -158,22 +186,35 @@ export class MainScene extends Phaser.Scene {
         if (this.room.viewAreas) {
             for (let area of this.room.viewAreas) {
                 if (this.inBounds(x, y, area.bounds)) {
-                    if (this.room.interaction && this.room.interaction.object.setVisible) {
-                        this.room.interaction.object.setVisible(false);
+                    if (this.room.interactibles) {
+                        for (let interactible of this.room.interactibles) {
+                            if (interactible.object.setVisible) {
+                                interactible.object.setVisible(false);
+                            }
+                        }
                     }
                     this.room = rooms[area.goTo];
                     this.bg.setTexture(this.room.bg(this.progress));
-                    if (this.room.interaction) {
-                        if (!this.room.interaction.object) {
-                            this.room.interaction.object = this.room.interaction.init(this);
-                            if (this.room.interaction.object.setVisible) {
-                                this.interactiveObjects.add(this.room.interaction.object);
+                    if (this.room.interactibles) {
+                        for (let interactible of this.room.interactibles) {
+                            if (!interactible.object) {
+                                interactible.object = interactible.init(this);
+                                if (interactible.object.setVisible) {
+                                    this.interactiveObjects.add(interactible.object);
+                                }
+                            }
+                            if (interactible.enabled(this.progress)) {   
+                                if (interactible.object.setVisible) {
+                                    interactible.object.setVisible(true);
+                                }
+                            } else {
+                                if (interactible.object.setVisible) {
+                                    interactible.object.setVisible(false);
+                                }
                             }
                         }
-                        if (this.room.interaction.object.setVisible) {
-                            this.room.interaction.object.setVisible(true);
-                        }
                     }
+                    this.updateCursor();
                     return;
                 }
             }
@@ -188,15 +229,14 @@ export class MainScene extends Phaser.Scene {
                     this.progress.add(item.get);
                     this.inventory.addItem(item.get);
                     this.bg.setTexture(this.room.bg(this.progress));
+                    this.updateCursor();
                     return;
                 }
             }
-        }
-
-        
+        }        
     }
 
-    onMouseMove() {
+    updateCursor() {
         let x = this.input.activePointer.worldX;
         let y = this.input.activePointer.worldY;
         // console.log(this.input.activePointer.worldX, this.input.activePointer.worldY)
@@ -216,34 +256,14 @@ export class MainScene extends Phaser.Scene {
         
     }
 
-    updateCursor() {
-        this.cursor.setPosition(
-            this.input.activePointer.worldX, this.input.activePointer.worldY
-        );
-
-        if (!this.holding && !this.inventory.inspecting && !this.inDialogue) {
-            this.cursor.setTexture('cursor-click');
-            if (this.room.viewAreas) {
-                for (let area of this.room.viewAreas) {
-                    if (Phaser.Geom.Rectangle.Contains(
-                        area.bounds, this.input.activePointer.worldX, this.input.activePointer.worldY)
-                    ) {
-                        this.cursor.setTexture(area.cursor || 'cursor-look');
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
     inBounds(x: number, y: number, bounds: number[]) {
         return x > bounds[0] && x < bounds[0] + bounds[2] &&
             y > bounds[1] && y < bounds[1] + bounds[3];
     }
 
-    showDialogue(lines: string[], onStart?: Function, onFinish?: Function) {
+    showDialogue(lines: string[], onStart?: Function, onFinish?: Function, character?: string) {
         this.inDialogue = true;
-        this.dialogue.display(lines, onStart, onFinish);
+        this.dialogue.display(lines, onStart, onFinish, character);
     }
 
     update(time: number, delta: number) {

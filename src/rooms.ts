@@ -11,11 +11,13 @@ export const rooms = {
         viewAreas: [
             {
                 bounds: [0, 0, 100, 620],
-                goTo: '1-west'
+                goTo: '1-west',
+                cursor: 'cursor-left'
             },
             {
                 bounds: [1180, 0, 100, 620],
-                goTo: '1-east'
+                goTo: '1-east',
+                cursor: 'cursor-right'
             },
             {
                 bounds: [210, 100, 200, 230],
@@ -31,29 +33,35 @@ export const rooms = {
                 cursor: 'cursor-click'
             }
         ],
-        interaction: {
-            enabled: progress => !progress.has('door-1'),
-            bounds: [472, 216, 185, 390],
-            init: (scene: MainScene) => ({
-                onClick: (x, y, holding) => {
-                    if (holding && holding.item.id === 'key') {
-                        scene.progress.add('door-1');
-                        scene.inventory.destroyHeldItem();
+        interactibles: [
+            {
+                enabled: progress => !progress.has('door-1'),
+                bounds: [472, 216, 185, 390],
+                init: (scene: MainScene) => ({
+                    onClick: (x, y, holding) => {
+                        if (holding && holding.item.id === 'key') {
+                            scene.progress.add('door-1');
+                            scene.inventory.destroyHeldItem();
+                        } else {
+                            scene.showDialogue(["It's locked."]);
+                        }
                     }
-                }
-            })
-        }
+                })
+            }
+        ]
     },
     '1-east': {
         bg: () => '1-2',
         viewAreas: [
             {
                 bounds: [0, 0, 100, 620],
-                goTo: '1-north'
+                goTo: '1-north',
+                cursor: 'cursor-left'
             },
             {
                 bounds: [1180, 0, 100, 620],
-                goTo: '1-south'
+                goTo: '1-south',
+                cursor: 'cursor-right'
             },
             {
                 bounds: [100, 550, 200, 150],
@@ -91,7 +99,8 @@ export const rooms = {
             },
             {
                 bounds: [130, 315, 250, 230],
-                goTo: '1-east-shelf-books'
+                goTo: '1-east-shelf-books',
+                cursor: 'cursor-click'
             },
             {
                 bounds: [460, 400, 290, 150],
@@ -104,7 +113,7 @@ export const rooms = {
         ]
     },
     '1-east-shelf-books': {
-        bg: progress => progress.has('good-snake') ? '1-5_5' : '1-5_4',
+        bg: progress => progress.has('good-snake') ? '1-5_4' : '1-5_5',
         viewAreas: [
             {
                 bounds: [0, 0, 1280, 200],
@@ -114,6 +123,10 @@ export const rooms = {
             {
                 bounds: [460, 400, 290, 150],
                 goTo: '1-east-shelf-minesweeper'
+            },
+            {
+                bounds: [883, 190, 216, 326],
+                goTo: '1-east-shelf-bottles'
             }
         ],
         items: [
@@ -144,11 +157,13 @@ export const rooms = {
                 get: 'key'
             }
         ],
-        interaction: {
-            enabled: progress => !progress.has('minesweeper'),
-            bounds: [440, 160, 400, 400],
-            init: scene => new Minesweeper(scene)
-        }
+        interactibles: [
+            {
+                enabled: progress => !progress.has('minesweeper'),
+                bounds: [440, 160, 400, 400],
+                init: scene => new Minesweeper(scene)
+            }
+        ]
     },
     '1-east-shelf-bottles': {
         bg: () => '1-15',
@@ -165,11 +180,13 @@ export const rooms = {
         viewAreas: [
             {
                 bounds: [0, 0, 100, 620],
-                goTo: '1-east'
+                goTo: '1-east',
+                cursor: 'cursor-left'
             },
             {
                 bounds: [1180, 0, 100, 620],
-                goTo: '1-west'
+                goTo: '1-west',
+                cursor: 'cursor-right'
             },
             {
                 bounds: [473, 480, 300, 240],
@@ -236,33 +253,36 @@ export const rooms = {
                 cursor: 'cursor-back'
             },
         ],
-        interaction: {
-            enabled: progress => !progress.has('unscrew'),
-            bounds: [590, 300, 100, 100],
-            init: (scene: MainScene) => ({
-                onClick: (x, y, holding) => {
-                    if (holding && holding.item.id === 'screwdriver') {
-                        if (scene.progress.has('screwdriver-admin')) {
-                            scene.progress.add('unscrew');
-                            console.log('yay');
-                        } else {
-                            scene.showDialogue(["That's weird, it's only getting tighter."]);
+        interactibles: [
+            {        
+                enabled: progress => !progress.has('unscrew'),
+                bounds: [590, 300, 100, 100],
+                init: (scene: MainScene) => ({
+                    onClick: (x, y, holding) => {
+                        if (holding && holding.item.id === 'screwdriver') {
+                            if (scene.progress.has('screwdriver-admin')) {
+                                scene.progress.add('unscrew');
+                            } else {
+                                scene.showDialogue(["That's weird, it's only getting tighter."]);
+                            }
                         }
                     }
-                }
-            })
-        }
+                })
+            }
+        ]
     },
     '1-west': {
         bg: () => '1-4',
         viewAreas: [
             {
                 bounds: [0, 0, 100, 620],
-                goTo: '1-south'
+                goTo: '1-south',
+                cursor: 'cursor-left'
             },
             {
                 bounds: [1180, 0, 100, 620],
-                goTo: '1-north'
+                goTo: '1-north',
+                cursor: 'cursor-right'
             },
             {
                 bounds: [100, 400, 550, 300],
@@ -283,11 +303,13 @@ export const rooms = {
                 cursor: 'cursor-back'
             }
         ],
-        interaction: {
-            enabled: () => true,
-            bounds: [0, 0, 0, 0],
-            init: scene => new MasterTV1(scene)
-        }
+        interactibles: [
+            {
+                enabled: () => true,
+                bounds: [0, 0, 0, 0],
+                init: scene => new MasterTV1(scene)
+            }
+        ]
     },
     '1-west-couch': {
         bg: () => '1-12',
@@ -365,15 +387,18 @@ export const rooms = {
         viewAreas: [
             {
                 bounds: [0, 0, 100, 620],
-                goTo: '2-south'
+                goTo: '2-south',
+                cursor: 'cursor-left'
             },
             {
                 bounds: [100, 0, 1080, 100],
-                goTo: '2-ceiling'
+                goTo: '2-ceiling',
+                cursor: 'cursor-up'
             },
             {
                 bounds: [1180, 0, 100, 620],
-                goTo: '2-north'
+                goTo: '2-north',
+                cursor: 'cursor-right'
             },
             {
                 bounds: [300, 400, 200, 200],
@@ -383,17 +408,7 @@ export const rooms = {
                 bounds: [100, 100, 200, 200],
                 goTo: '2-west-tv'
             }
-        ],
-        interaction: {
-            enabled: progress => !progress.has('door-2'),
-            bounds: [530, 300, 210, 400],
-            init: (scene: MainScene) => ({
-                onClick: (x, y, holding) => {
-                    // scene.progress.add('door-1');
-                    // scene.inventory.destroyHeldItem();
-                }
-            })
-        }
+        ]
     },
     '2-west-computer': {
         bg: () => '2-9',
@@ -404,11 +419,13 @@ export const rooms = {
                 cursor: 'cursor-back'
             }
         ],
-        interaction: {
-            enabled: () => true,
-            bounds: [370, 220, 480, 465],
-            init: (scene: MainScene) => new Computer(scene)
-        }
+        interactibles: [
+            {
+                enabled: () => true,
+                bounds: [370, 220, 480, 465],
+                init: scene => new Computer(scene)
+            }
+        ]
     },
     '2-west-tv': {
         bg: () => '2-10',
@@ -419,11 +436,13 @@ export const rooms = {
                 cursor: 'cursor-back'
             }
         ],
-        interaction: {
-            enabled: () => true,
-            bounds: [0, 0, 0, 0],
-            init: scene => new MasterTV2(scene)
-        }
+        interactibles: [
+            {
+                enabled: () => true,
+                bounds: [0, 0, 0, 0],
+                init: scene => new MasterTV2(scene)
+            }
+        ]
     },
     '2-ceiling': {
         bg: () => '2-7',
@@ -440,15 +459,18 @@ export const rooms = {
         viewAreas: [
             {
                 bounds: [100, 0, 650, 100],
-                goTo: '2-ceiling'
+                goTo: '2-ceiling',
+                cursor: 'cursor-up'
             },
             {
                 bounds: [0, 0, 100, 620],
-                goTo: '2-east'
+                goTo: '2-east',
+                cursor: 'cursor-left'
             },
             {
                 bounds: [1180, 0, 100, 620],
-                goTo: '2-west'
+                goTo: '2-west',
+                cursor: 'cursor-right'
             },
             {
                 bounds: [445, 200, 175, 330],
@@ -509,26 +531,31 @@ export const rooms = {
                 prereq: 'safe'
             }
         ],
-        interaction: {
-            enabled: () => progress => !progress.has('safe'),
-            bounds: [0, 0, 0, 0],
-            init: scene => new Safe(scene)
-        }
+        interactibles: [
+            {
+                enabled: () => progress => !progress.has('safe'),
+                bounds: [0, 0, 0, 0],
+                init: scene => new Safe(scene)
+            }
+        ]
     },
     '2-north': {
         bg: () => '2-2',
         viewAreas: [
             {
                 bounds: [100, 0, 1080, 100],
-                goTo: '2-ceiling'
+                goTo: '2-ceiling',
+                cursor: 'cursor-up'
             },
             {
                 bounds: [0, 0, 100, 620],
-                goTo: '2-west'
+                goTo: '2-west',
+                cursor: 'cursor-left'
             },
             {
                 bounds: [1180, 0, 100, 620],
-                goTo: '2-east'
+                goTo: '2-east',
+                cursor: 'cursor-right'
             },
             {
                 bounds: [440, 250, 390, 210],
@@ -545,11 +572,13 @@ export const rooms = {
                 cursor: 'cursor-back'
             }
         ],
-        interaction: {
-            enabled: progress => !progress.has('unfold'),
-            bounds: [0, 0, 0, 0],
-            init: scene => new Unfold(scene)
-        },
+        interactibles: [
+            {
+                enabled: () => progress => !progress.has('safe'),
+                bounds: [0, 0, 0, 0],
+                init: scene => new Safe(scene)
+            }
+        ],
         items: [
             {
                 bounds: [465, 260, 425, 200],
@@ -563,15 +592,18 @@ export const rooms = {
         viewAreas: [
             {
                 bounds: [100, 0, 1080, 100],
-                goTo: '2-ceiling'
+                goTo: '2-ceiling',
+                cursor: 'cursor-up'
             },
             {
                 bounds: [0, 0, 100, 620],
-                goTo: '2-north'
+                goTo: '2-north',
+                cursor: 'cursor-left'
             },
             {
                 bounds: [1180, 0, 100, 620],
-                goTo: '2-south'
+                goTo: '2-south',
+                cursor: 'cursor-right'
             },
             {
                 bounds: [450, 200, 375, 320],

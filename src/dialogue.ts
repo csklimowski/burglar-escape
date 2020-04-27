@@ -7,12 +7,14 @@ export class Dialogue extends Phaser.GameObjects.BitmapText {
     finalText: string = '';
     charIndex: number = 0;
     done: boolean = true;
+    character: string;
+    sfx: any;
 
     onFinish: Function;
     onStart: Function;
 
     constructor(scene: Phaser.Scene) {
-        super(scene, 200, 100, 'normal', '', 50);
+        super(scene, 200, 100, 'outlined', '', 50);
         scene.add.existing(this);
 
         scene.time.addEvent({
@@ -21,6 +23,12 @@ export class Dialogue extends Phaser.GameObjects.BitmapText {
             loop: true,
             delay: 50
         });
+        
+
+        this.sfx = {
+            master: scene.sound.add('master-voice'),
+            burglar: scene.sound.add('burglar-voice')
+        }
     }
 
     clear() {
@@ -28,7 +36,7 @@ export class Dialogue extends Phaser.GameObjects.BitmapText {
         this.done = true;
     }
 
-    display(lines: string[], onStart?: Function, onFinish?: Function) {
+    display(lines: string[], onStart?: Function, onFinish?: Function, character?: string) {
         this.setText('');
         this.onStart = onStart;
         this.onFinish = onFinish;
@@ -36,6 +44,8 @@ export class Dialogue extends Phaser.GameObjects.BitmapText {
         this.finalText = this.lineQueue.shift();
         this.charIndex = 0;
         this.done = false;
+        this.character = character || 'master';
+        if (character === 'master') this.setTint(0xffff00);
     }
 
     nextLine() {
@@ -58,7 +68,7 @@ export class Dialogue extends Phaser.GameObjects.BitmapText {
             this.setText(this.finalText.substring(0, this.charIndex+1));
             this.charIndex += 1;
             if (ci % 2 == 0 && this.finalText[ci] !== '.') {
-                // play SFX
+                this.sfx[this.character].play();
             }
         } else {
             this.done = true;

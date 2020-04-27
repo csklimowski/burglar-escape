@@ -14,8 +14,8 @@ export class InputText extends Phaser.GameObjects.Container {
         super(scene);
         scene.add.existing(this);
 
-        this.text = scene.add.bitmapText(100, 200, 'console', label + '_');
-        this.instructions = scene.add.bitmapText(100, 300, 'console', 'Press ENTER to submit.')
+        this.text = scene.add.bitmapText(430, 230, 'console', label + '_');
+        this.instructions = scene.add.bitmapText(430, 300, 'console', 'Press ENTER to submit.')
         this.add(this.text);
         this.add(this.instructions);
         this.setVisible(false);
@@ -375,4 +375,55 @@ export class Computer extends Phaser.GameObjects.Container {
     onClick(x, y, holding) {
         this.inputText.setVisible(true);
     } 
+}
+
+
+export class Snakes extends Phaser.GameObjects.Container {
+
+    scene: MainScene;
+
+    constructor(scene: Phaser.Scene) {
+        super(scene);
+        scene.add.existing(this);
+
+        let cards = [
+            {
+                side: 0,
+                image: scene.add.image(300, 200, 'snake-1')
+            },
+            {
+                side: 0,
+                image: scene.add.image(400, 300, 'snake-2')
+            },
+            {
+                side: 0,
+                image: scene.add.image(500, 300, 'snake-3')
+            },
+            {
+                side: 0,
+                image: scene.add.image(300, 300, 'snake-4')
+            },
+            {
+                side: 0,
+                image: scene.add.image(400, 300, 'snake-5')
+            },
+            {
+                side: 0,
+                image: scene.add.image(500, 300, 'snake-6')
+            }
+        ];
+
+        // for (let i = 0; i < 4; i++) {
+        //     this.add(symbols[i].image);
+        //     symbols[i].image.setInteractive();
+        //     symbols[i].image.on(Phaser.Input.Events.POINTER_DOWN, () => clickSymbol(i));
+        //     symbols[i].image.setScale(0.6);
+        //     symbols[i].image.setTint(0x000000);
+
+        //     this.add(colors[i].image);
+        //     colors[i].image.setInteractive();
+        //     colors[i].image.on(Phaser.Input.Events.POINTER_DOWN, () => clickColor(i));
+        //     colors[i].image.setScale(0.5);
+        // }
+    }
 }

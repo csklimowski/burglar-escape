@@ -8,18 +8,24 @@ export class LoadScene extends Phaser.Scene {
 
     preload() {
         this.add.text(20, 20, 'Loading...');
-        // this.load.audio('gasp', 'sfx/gasp!.ogg');
+
+        this.load.audio('burglar-voice', 'sfx/burglar.ogg');
+        this.load.audio('master-voice', 'sfx/master.ogg');
+
         // this.load.audio('music', 'songs/music.mp3');
         
-        this.load.bitmapFont('normal', 'font/font.png', 'font/font.fnt');
+        this.load.bitmapFont('normal', 'font/normal.png', 'font/normal.fnt');
         this.load.bitmapFont('console', 'font/console.png', 'font/console.fnt');
-        // this.load.bitmapFont('outline', 'font/font-outline.png', 'font/font-outline.fnt');
+        this.load.bitmapFont('outlined', 'font/outlined.png', 'font/outlined.fnt');
 
 
         // CURSORS
         this.load.image('cursor-click', 'assets/cursors/click.png');
         this.load.image('cursor-look', 'assets/cursors/look.png');
         this.load.image('cursor-back', 'assets/cursors/back.png');
+        this.load.image('cursor-left', 'assets/cursors/left.png');
+        this.load.image('cursor-right', 'assets/cursors/right.png');
+        this.load.image('cursor-up', 'assets/cursors/up.png');
 
         // ROOMS
         // this.load.image('1-1', 'assets/test room/1.jpg');
@@ -35,20 +41,20 @@ export class LoadScene extends Phaser.Scene {
 
         this.load.image('1-1', 'assets/rooms final/room1/1.png');
         this.load.image('1-1_2', 'assets/rooms final/room1/1_2.png');
-        this.load.image('1-2', 'assets/rooms final/room1/2.png');
-        this.load.image('1-3', 'assets/rooms final/room1/3.png');
+        this.load.image('1-2', 'assets/rooms final/room1/2_new.png');
+        this.load.image('1-3', 'assets/rooms final/room1/3_new.png');
         this.load.image('1-3_2', 'assets/rooms final/room1/3_2.png');
         this.load.image('1-4', 'assets/rooms final/room1/4.png');
-        this.load.image('1-5', 'assets/rooms final/room1/5.png');
-        this.load.image('1-5_2', 'assets/rooms final/room1/5_2.png');
-        this.load.image('1-5_3', 'assets/rooms final/room1/5_3.png');
-        this.load.image('1-5_4', 'assets/rooms final/room1/5_4.png');
-        this.load.image('1-5_5', 'assets/rooms final/room1/5_5.png');
-        this.load.image('1-6', 'assets/rooms final/room1/6.png');
-        this.load.image('1-6_2', 'assets/rooms final/room1/6_2.png');
-        this.load.image('1-6_3', 'assets/rooms final/room1/6_3.png');
-        this.load.image('1-6_4', 'assets/rooms final/room1/6_4.png');
-        this.load.image('1-6_5', 'assets/rooms final/room1/6_5.png');
+        this.load.image('1-5', 'assets/rooms final/room1/5_new_1.png');
+        this.load.image('1-5_2', 'assets/rooms final/room1/5_new_2.png');
+        this.load.image('1-5_3', 'assets/rooms final/room1/5_new_3.png');
+        this.load.image('1-5_4', 'assets/rooms final/room1/5_new_4.png');
+        this.load.image('1-5_5', 'assets/rooms final/room1/5_new_5.png');
+        this.load.image('1-6', 'assets/rooms final/room1/ninesweeper1.png');
+        this.load.image('1-6_2', 'assets/rooms final/room1/minesweeper2.png');
+        this.load.image('1-6_3', 'assets/rooms final/room1/minesweeper3.png');
+        this.load.image('1-6_4', 'assets/rooms final/room1/minesweeper4.png');
+        this.load.image('1-6_5', 'assets/rooms final/room1/minesweeper5.png');
         this.load.image('1-7', 'assets/rooms final/room1/7.png');
         this.load.image('1-7_2', 'assets/rooms final/room1/7_2.png');
         this.load.image('1-7_3', 'assets/rooms final/room1/7_3.png');
@@ -72,9 +78,9 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('2-2', 'assets/rooms final/room2/2.png');
         this.load.image('2-3', 'assets/rooms final/room2/3.png');
         this.load.image('2-3_2', 'assets/rooms final/room2/3_2.png');
-        this.load.image('2-4', 'assets/rooms final/room2/4.png');
+        this.load.image('2-4', 'assets/rooms final/room2/4_new.png');
         this.load.image('2-5', 'assets/rooms final/room2/5.png');
-        this.load.image('2-6', 'assets/rooms final/room2/6.png');
+        this.load.image('2-6', 'assets/rooms final/room2/6_new.png');
         this.load.image('2-6_2', 'assets/rooms final/room2/6_2.png');
         this.load.image('2-6_3', 'assets/rooms final/room2/6_3.png');
         this.load.image('2-7', 'assets/rooms final/room2/7.png');
