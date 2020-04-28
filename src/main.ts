@@ -3,75 +3,6 @@ import {rooms} from './rooms';
 import { Dialogue } from './dialogue';
 import { Inventory, InventoryItem } from './inventory';
 
-
-export class IntroScene extends Phaser.Scene {
-    constructor() {
-        super({
-            key: 'intro'
-        });
-    }
-
-    index: number = 0;
-    panels: string[] = [
-        'gn-1',
-        'gn-2',
-        'gn-3',
-        'gn-4',
-        'gn-5',
-        'gn-6'
-    ];
-    image: Phaser.GameObjects.Image;
-
-    create() {
-        this.image = this.add.image(640, 360, 'gn-1');
-
-        this.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
-            this.index += 1;
-            if (this.index > 5) {
-                this.scene.start('main')
-            } else {
-                this.image.setTexture(this.panels[this.index]);
-            }
-        }, this);
-    }
-}
-
-export class EndScene extends Phaser.Scene {
-    constructor() {
-        super({
-            key: 'end'
-        });
-    }
-
-    index: number = 0;
-    panels: string[] = [
-        'gn-end1',
-        'gn-end2',
-        'gn-end3',
-        'gn-end4',
-        'gn-end5',
-        'gn-end1',
-        'gn-end6'
-    ];
-    image: Phaser.GameObjects.Image;
-
-    create() {
-        
-        this.input.setDefaultCursor('auto');
-        this.image = this.add.image(640, 360, 'gn-end1');
-
-        this.input.on(Phaser.Input.Events.POINTER_DOWN, () => {
-            this.index += 1;
-            if (this.index > 6) {
-                this.add.rectangle(640, 360, 1280, 720, 0x000000);
-                this.add.bitmapText(300, 300, 'normal', 'Thanks for playing!');
-            } else {
-                this.image.setTexture(this.panels[this.index]);
-            }
-        }, this);
-    }
-}
-
 export class MainScene extends Phaser.Scene {
 
     constructor() {
@@ -96,16 +27,15 @@ export class MainScene extends Phaser.Scene {
 
     create() {
         this.progress = new Set();
-        this.input.setDefaultCursor('none');
-        this.room = rooms['2-south-safe'];
+        this.room = rooms['1-west-tv'];
 
         this.sfx = {
-            toggle: this.sound.add('toggle'),
+            toggle: this.sound.add('place-flag'),
             door: this.sound.add('door'),
             correct: this.sound.add('pass-correct'),
             incorrect: this.sound.add('pass-incorrect'),
             pickUp: this.sound.add('pick-up'),
-            placeFlag: this.sound.add('place-flag'),
+            placeFlag: this.sound.add('toggle'),
             slide: this.sound.add('slide'),
             solved: this.sound.add('solved'),
         };
@@ -124,12 +54,6 @@ export class MainScene extends Phaser.Scene {
         this.cursor.setOrigin(0, 0);
         this.updateCursor();
         this.activateInteractibles();
-
-        this.inventory.addItem('key');
-        this.inventory.addItem('flag-1');
-        this.inventory.addItem('flag-2');
-        this.inventory.addItem('flag-3');
-
         
         this.input.on(Phaser.Input.Events.POINTER_DOWN, this.onClick, this);
         this.input.on(Phaser.Input.Events.POINTER_MOVE, this.updateCursor, this);
@@ -166,22 +90,12 @@ export class MainScene extends Phaser.Scene {
                         }
                         this.bg.setTexture(this.room.bg(this.progress));
                         this.updateCursor();
-                        this.activateInteractibles();
+                        // this.activateInteractibles();
                         return;
                     }
                 }
             }
         }
-
-        // if (this.room.interaction && this.room.interaction.enabled(this.progress)) {
-        //     if (this.inBounds(x, y, this.room.interaction.bounds)) {
-        //         if (this.room.interaction.object.onClick) {
-        //             this.room.interaction.object.onClick(x, y, this.holding);
-        //         }
-        //         this.bg.setTexture(this.room.bg(this.progress));
-        //         return;
-        //     }
-        // }
 
         if (this.holding) {
             this.inventory.returnItem(this.holding);
@@ -254,7 +168,7 @@ export class MainScene extends Phaser.Scene {
                         this.interactiveObjects.add(interactible.object);
                     }
                 }
-                if (interactible.enabled(this.progress)) {   
+                if (interactible.enabled(this.progress)) {  
                     if (interactible.object.setVisible) {
                         interactible.object.setVisible(true);
                     }

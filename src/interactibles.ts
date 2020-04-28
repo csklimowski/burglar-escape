@@ -156,6 +156,8 @@ export class Minesweeper extends Phaser.GameObjects.Container {
                             this.flaggedSpaces[space].image.destroy();
                         }
                     }
+                } else {
+                    this.scene.sfx.placeFlag.play();
                 }
             }
         }
@@ -217,6 +219,7 @@ export class Unfold extends Phaser.GameObjects.Container {
                 
                 this.scene.progress.add('unfold');
                 this.scene.bg.setTexture('2-8_2');
+                this.scene.room.interactibles[1].object.setVisible(true);
                 this.scene.sfx.slide.play();
                 numbers[0].box.destroy();
                 numbers[1].box.destroy();

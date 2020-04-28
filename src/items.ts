@@ -88,28 +88,28 @@ export const items = {
     },
     'flag-1': {
         id: 'flag-1',
-        small: 'inv-flag',
+        small: 'flag-flat',
         inspect: {
             init: scene => scene.add.image(640, 360, 'flag')
         }
     },
     'flag-2': {
         id: 'flag-2',
-        small: 'inv-flag',
+        small: 'flag-flat',
         inspect: {
             init: scene => scene.add.image(640, 360, 'flag')
         }
     },
     'flag-3': {
         id: 'flag-3',
-        small: 'inv-flag',
+        small: 'flag-flat',
         inspect: {
             init: scene => scene.add.image(640, 360, 'flag')
         }
     },
     'flag-4': {
         id: 'flag-4',
-        small: 'inv-flag',
+        small: 'flag-flat',
         inspect: {
             init: scene => scene.add.image(640, 360, 'flag')
         }

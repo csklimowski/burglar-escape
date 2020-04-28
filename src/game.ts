@@ -1,14 +1,6 @@
-import { MainScene, EndScene } from './main';
+import { MainScene } from './main';
 import { LoadScene } from './load';
-import { IntroScene } from './main';
-
-// document.addEventListener("keydown", function (e) {
-//     if (e.keyCode == 8) { // backspace
-//         e.preventDefault()
-//         // do whatever the backspace should do
-//     }
-// });
-
+import { IntroScene, EndScene } from './gn';
 
 const game = new Phaser.Game({
     width: 1280,

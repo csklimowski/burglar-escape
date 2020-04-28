@@ -13,6 +13,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.audio('burglar-voice', 'sfx/burglar.ogg');
         this.load.audio('door', 'sfx/door_open.ogg');
         this.load.audio('music-ending', 'sfx/ending.ogg');
+        this.load.audio('sting', 'sfx/sting.ogg');
         this.load.audio('master-voice', 'sfx/master.ogg');
         this.load.audio('pass-correct', 'sfx/pass_correct.ogg');
         this.load.audio('pass-incorrect', 'sfx/pass_incorrect.ogg');
@@ -21,8 +22,6 @@ export class LoadScene extends Phaser.Scene {
         this.load.audio('slide', 'sfx/slide.ogg');
         this.load.audio('solved', 'sfx/solved.ogg');
         this.load.audio('toggle', 'sfx/toggle.ogg');
-
-        // this.load.audio('music', 'songs/music.mp3');
         
         this.load.bitmapFont('normal', 'font/normal.png', 'font/normal.fnt');
         this.load.bitmapFont('console', 'font/console.png', 'font/console.fnt');
@@ -38,16 +37,6 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('cursor-up', 'assets/cursors/up.png');
 
         // ROOMS
-        // this.load.image('1-1', 'assets/test room/1.jpg');
-        // this.load.image('1-2', 'assets/test room/2.jpg');
-        // this.load.image('1-3', 'assets/test room/3.jpg');
-        // this.load.image('1-4', 'assets/test room/4.jpg');
-
-        // this.load.image('1-1a', 'assets/minesweeper-test.png');
-
-        // this.load.image('1-4a', 'assets/test room/close up monkey.jpg');
-        // this.load.image('1-4b', 'assets/test room/monkeygone.jpg');
-
 
         this.load.image('1-1', 'assets/rooms final/room1/1.png');
         this.load.image('1-1_2', 'assets/rooms final/room1/1_2.png');
@@ -137,7 +126,6 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('snake-4', 'assets/snakes/snake-4.png');
         this.load.image('snake-5', 'assets/snakes/snake-5.png');
         this.load.image('snake-6', 'assets/snakes/snake-6.png');
-        // this.load.image('inv-monkey', 'assets/test room/monkeyinventory.png');
 
         this.load.image('flag', 'assets/items final/flag/inspect.png');
         this.load.image('flag-flat', 'assets/items final/flag/game_piece_2.png')
@@ -165,11 +153,6 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('master-talk2-4', 'assets/master/room2/talk 2/talk20024.png');
         this.load.image('master-idle2', 'assets/master/room2/default.png');
 
-        // this.load.spritesheet('speak-button', 'img/speak-button.png', {
-        //     frameWidth: 144,
-        //     frameHeight: 100
-        // });
-
         // INTERACTIVE STUFF
         this.load.image('button-green', 'assets/buttons/green.png');
         this.load.image('button-purple', 'assets/buttons/purple.png');
@@ -189,6 +172,9 @@ export class LoadScene extends Phaser.Scene {
 
 
         // GRAPHIC NOVEL
+        
+        this.load.image('title-1', 'assets/graphic novel/title.png');
+        this.load.image('title-2', 'assets/graphic novel/title2.png');
 
         this.load.image('gn-1', 'assets/graphic novel/1.png');
         this.load.image('gn-2', 'assets/graphic novel/2.png');
@@ -197,12 +183,15 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('gn-5', 'assets/graphic novel/5.png');
         this.load.image('gn-6', 'assets/graphic novel/6.png');
 
+        this.load.image('gn-end0', 'assets/graphic novel/end_0.png');
         this.load.image('gn-end1', 'assets/graphic novel/end_1.png');
         this.load.image('gn-end2', 'assets/graphic novel/end_2.png');
         this.load.image('gn-end3', 'assets/graphic novel/end_3.png');
         this.load.image('gn-end4', 'assets/graphic novel/end_4.png');
         this.load.image('gn-end5', 'assets/graphic novel/end_5.png');
         this.load.image('gn-end6', 'assets/graphic novel/end_6.png');
+
+        this.load.image('credits', 'assets/end.png');
     }
 
     create() {
@@ -274,6 +263,9 @@ export class LoadScene extends Phaser.Scene {
             ]
         });
 
-        this.scene.start('main');
+        console.log("This room is secure, you can't cheat your way through.");
+        console.log("The console will be of no use to you.");
+
+        this.scene.start('intro');
     }
 }

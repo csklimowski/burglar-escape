@@ -154,7 +154,7 @@ export const rooms = {
         ],
         items: [
             {
-                bounds: [580, 310, 120, 120],
+                bounds: [590, 265, 100, 100],
                 get: 'key'
             }
         ],
@@ -216,9 +216,9 @@ export const rooms = {
     '1-south-table': {
         bg: progress => {
             if (progress.has('flag-1') && progress.has('bad-snake')) {
-                return '1-7_2';
+                return '1-7_4';
             }
-            if (progress.has('flag-1')) return '1-7_4';
+            if (progress.has('flag-1')) return '1-7_2';
             if (progress.has('bad-snake')) return '1-7_3';
             return '1-7';
         },
@@ -515,7 +515,8 @@ export const rooms = {
             },
             {
                 bounds: [445, 200, 175, 330],
-                goTo: '1-south'
+                goTo: '1-south',
+                cursor: 'cursor-click'
             },
             {
                 bounds: [650, 230, 100, 130],

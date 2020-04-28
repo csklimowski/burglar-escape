@@ -45,6 +45,7 @@ export class Dialogue extends Phaser.GameObjects.BitmapText {
         this.done = false;
         this.character = character || 'master';
         if (character === 'master') this.setTint(0xffff00);
+        else this.setTint(0xffffff);
     }
 
     nextLine() {
