@@ -1,7 +1,7 @@
 import { MainScene } from "./main";
 import {
     Minesweeper, Unfold, Safe,
-    Computer, MasterTV1, MasterTV2
+    Computer, MasterTV1, MasterTV2, Snakes
 } from './interactibles';
 
 
@@ -40,10 +40,11 @@ export const rooms = {
                 init: (scene: MainScene) => ({
                     onClick: (x, y, holding) => {
                         if (holding && holding.item.id === 'key') {
+                            scene.sfx.door.play();
                             scene.progress.add('door-1');
                             scene.inventory.destroyHeldItem();
                         } else {
-                            scene.showDialogue(["It's locked."]);
+                            scene.showDialogue(["It's locked."], null, null, 'burglar');
                         }
                     }
                 })
@@ -160,7 +161,7 @@ export const rooms = {
         interactibles: [
             {
                 enabled: progress => !progress.has('minesweeper'),
-                bounds: [440, 160, 400, 400],
+                bounds: [440, 110, 360, 360],
                 init: scene => new Minesweeper(scene)
             }
         ]
@@ -242,6 +243,17 @@ export const rooms = {
                 bounds: [590, 210, 200, 110],
                 get: 'bad-snake'
             }
+        ],
+        interactibles: [
+            {
+                enabled: progress => !progress.has('unscrew'),
+                bounds: [600, 370, 100, 100],
+                init: (scene: MainScene) => ({
+                    onClick: (x, y, holding) => {
+                        scene.showDialogue(["It's stuck to the table somehow."], null, null, 'burglar');
+                    }
+                })
+            }
         ]
     },
     '1-south-table-under': {
@@ -263,7 +275,7 @@ export const rooms = {
                             if (scene.progress.has('screwdriver-admin')) {
                                 scene.progress.add('unscrew');
                             } else {
-                                scene.showDialogue(["That's weird, it's only getting tighter."]);
+                                scene.showDialogue(["That's weird, it's only getting tighter."], null, null, 'burglar');
                             }
                         }
                     }
@@ -324,13 +336,37 @@ export const rooms = {
                 goTo: '1-west-couch-side'
             },
             {
+                bounds: [160, 290, 440, 260],
+                goTo: '1-west-couch-cushion-1',
+                cursor: 'cursor-click'
+            },
+            {
                 bounds: [600, 290, 440, 260],
-                goTo: '1-west-couch-cushion',
+                goTo: '1-west-couch-cushion-2',
                 cursor: 'cursor-click'
             }
         ]
     },
-    '1-west-couch-cushion': {
+    '1-west-couch-cushion-1': {
+        bg: () => '1-12_4',
+        viewAreas: [
+            {
+                bounds: [0, 0, 1280, 200],
+                goTo: '1-west',
+                cursor: 'cursor-back'
+            },
+            {
+                bounds: [50, 250, 200, 400],
+                goTo: '1-west-couch-side'
+            },
+            {
+                bounds: [600, 290, 440, 260],
+                goTo: '1-west-couch-cushion-2',
+                cursor: 'cursor-click'
+            }
+        ]
+    },
+    '1-west-couch-cushion-2': {
         bg: progress => progress.has('flag-2') ? '1-12_3' : '1-12_2',
         viewAreas: [
             {
@@ -341,6 +377,11 @@ export const rooms = {
             {
                 bounds: [50, 250, 200, 400],
                 goTo: '1-west-couch-side'
+            },
+            {
+                bounds: [160, 290, 440, 260],
+                goTo: '1-west-couch-cushion-1',
+                cursor: 'cursor-click'
             }
         ],
         items: [
@@ -432,7 +473,7 @@ export const rooms = {
         viewAreas: [
             {
                 bounds: [0, 0, 1280, 620],
-                goTo: '2-west',
+                goTo: '2-south',
                 cursor: 'cursor-back'
             }
         ],
@@ -449,7 +490,7 @@ export const rooms = {
         viewAreas: [
             {
                 bounds: [0, 0, 1280, 520],
-                goTo: '2-south',
+                goTo: '2-north',
                 cursor: 'cursor-back'
             }
         ]
@@ -519,7 +560,7 @@ export const rooms = {
         bg: progress =>  progress.has('glasses') ? '2-6_3' : progress.has('safe') ? '2-6_2' : '2-6',
         viewAreas: [    
             {
-                bounds: [0, 0, 1280, 150],
+                bounds: [0, 0, 1280, 100],
                 goTo: '2-south',
                 cursor: 'cursor-back'
             }
@@ -540,7 +581,9 @@ export const rooms = {
         ]
     },
     '2-north': {
-        bg: () => '2-2',
+        bg: progress => progress.has('paper') ? '2-2_4' :
+            progress.has('snakes') ? '2-2_3' : 
+            progress.has('unfold') ? '2-2_2' : '2-2',
         viewAreas: [
             {
                 bounds: [100, 0, 1080, 100],
@@ -564,7 +607,9 @@ export const rooms = {
         ]
     },
     '2-north-panel': {
-        bg: progress => progress.has('paper') ? '2-8_4' : progress.has('unfold') ? '2-8_3' : '2-8',
+        bg: progress => progress.has('paper') ? '2-8_4' :
+            progress.has('snakes') ? '1-8_3' :
+            progress.has('unfold') ? '2-8_2' : '2-8',
         viewAreas: [
             {
                 bounds: [0, 0, 1280, 200],
@@ -574,16 +619,21 @@ export const rooms = {
         ],
         interactibles: [
             {
-                enabled: () => progress => !progress.has('safe'),
-                bounds: [0, 0, 0, 0],
-                init: scene => new Safe(scene)
+                enabled: progress => !progress.has('unfold'),
+                bounds: [0, 200, 1280, 400],
+                init: scene => new Unfold(scene)
+            },
+            {
+                enabled: progress => progress.has('unfold') && !progress.has('snakes'),
+                bounds: [0, 200, 1280, 400],
+                init: scene => new Snakes(scene)
             }
         ],
         items: [
             {
                 bounds: [465, 260, 425, 200],
                 get: 'paper',
-                prereq: 'unfold'
+                prereq: 'snakes'
             }
         ],
     },

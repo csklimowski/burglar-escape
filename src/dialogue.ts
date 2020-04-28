@@ -23,7 +23,6 @@ export class Dialogue extends Phaser.GameObjects.BitmapText {
             loop: true,
             delay: 50
         });
-        
 
         this.sfx = {
             master: scene.sound.add('master-voice'),

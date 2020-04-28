@@ -92,11 +92,23 @@ export class MainScene extends Phaser.Scene {
     inspectedObjects: Phaser.GameObjects.Container;
     interactiveObjects: Phaser.GameObjects.Container;
     invBg: Phaser.GameObjects.Container;
+    sfx: any;
 
     create() {
         this.progress = new Set();
         this.input.setDefaultCursor('none');
-        this.room = rooms['1-west-tv'];
+        this.room = rooms['2-south-safe'];
+
+        this.sfx = {
+            toggle: this.sound.add('toggle'),
+            door: this.sound.add('door'),
+            correct: this.sound.add('pass-correct'),
+            incorrect: this.sound.add('pass-incorrect'),
+            pickUp: this.sound.add('pick-up'),
+            placeFlag: this.sound.add('place-flag'),
+            slide: this.sound.add('slide'),
+            solved: this.sound.add('solved'),
+        };
 
         this.bg = this.add.image(640, 360, this.room.bg(this.progress));
         this.invBg = this.add.container(0, 0);
@@ -110,21 +122,15 @@ export class MainScene extends Phaser.Scene {
             'cursor-click'
         );
         this.cursor.setOrigin(0, 0);
-
-        if (this.room.interactibles) {
-            for (let interactible of this.room.interactibles) {
-                if (!interactible.object) {
-                    interactible.object = interactible.init(this);
-                    if (interactible.object.setVisible) {
-                        this.interactiveObjects.add(interactible.object);
-                    }
-                }
-            }
-        }
-        
+        this.updateCursor();
+        this.activateInteractibles();
 
         this.inventory.addItem('key');
+        this.inventory.addItem('flag-1');
+        this.inventory.addItem('flag-2');
+        this.inventory.addItem('flag-3');
 
+        
         this.input.on(Phaser.Input.Events.POINTER_DOWN, this.onClick, this);
         this.input.on(Phaser.Input.Events.POINTER_MOVE, this.updateCursor, this);
     }
@@ -160,6 +166,7 @@ export class MainScene extends Phaser.Scene {
                         }
                         this.bg.setTexture(this.room.bg(this.progress));
                         this.updateCursor();
+                        this.activateInteractibles();
                         return;
                     }
                 }
@@ -195,25 +202,7 @@ export class MainScene extends Phaser.Scene {
                     }
                     this.room = rooms[area.goTo];
                     this.bg.setTexture(this.room.bg(this.progress));
-                    if (this.room.interactibles) {
-                        for (let interactible of this.room.interactibles) {
-                            if (!interactible.object) {
-                                interactible.object = interactible.init(this);
-                                if (interactible.object.setVisible) {
-                                    this.interactiveObjects.add(interactible.object);
-                                }
-                            }
-                            if (interactible.enabled(this.progress)) {   
-                                if (interactible.object.setVisible) {
-                                    interactible.object.setVisible(true);
-                                }
-                            } else {
-                                if (interactible.object.setVisible) {
-                                    interactible.object.setVisible(false);
-                                }
-                            }
-                        }
-                    }
+                    this.activateInteractibles();
                     this.updateCursor();
                     return;
                 }
@@ -254,6 +243,28 @@ export class MainScene extends Phaser.Scene {
             }
         }
         
+    }
+
+    activateInteractibles() {
+        if (this.room.interactibles) {
+            for (let interactible of this.room.interactibles) {
+                if (!interactible.object) {
+                    interactible.object = interactible.init(this);
+                    if (interactible.object.setVisible) {
+                        this.interactiveObjects.add(interactible.object);
+                    }
+                }
+                if (interactible.enabled(this.progress)) {   
+                    if (interactible.object.setVisible) {
+                        interactible.object.setVisible(true);
+                    }
+                } else {
+                    if (interactible.object.setVisible) {
+                        interactible.object.setVisible(false);
+                    }
+                }
+            }
+        }
     }
 
     inBounds(x: number, y: number, bounds: number[]) {

@@ -9,8 +9,18 @@ export class LoadScene extends Phaser.Scene {
     preload() {
         this.add.text(20, 20, 'Loading...');
 
+        this.load.audio('music-beginning', 'sfx/beginning.ogg');
         this.load.audio('burglar-voice', 'sfx/burglar.ogg');
+        this.load.audio('door', 'sfx/door_open.ogg');
+        this.load.audio('music-ending', 'sfx/ending.ogg');
         this.load.audio('master-voice', 'sfx/master.ogg');
+        this.load.audio('pass-correct', 'sfx/pass_correct.ogg');
+        this.load.audio('pass-incorrect', 'sfx/pass_incorrect.ogg');
+        this.load.audio('pick-up', 'sfx/pick_up.ogg');
+        this.load.audio('place-flag', 'sfx/place_flag.ogg');
+        this.load.audio('slide', 'sfx/slide.ogg');
+        this.load.audio('solved', 'sfx/solved.ogg');
+        this.load.audio('toggle', 'sfx/toggle.ogg');
 
         // this.load.audio('music', 'songs/music.mp3');
         
@@ -76,6 +86,9 @@ export class LoadScene extends Phaser.Scene {
 
         this.load.image('2-1', 'assets/rooms final/room2/1.png');
         this.load.image('2-2', 'assets/rooms final/room2/2.png');
+        this.load.image('2-2_2', 'assets/rooms final/room2/2_2.png');
+        this.load.image('2-2_3', 'assets/rooms final/room2/2_3.png');
+        this.load.image('2-2_4', 'assets/rooms final/room2/2_4.png');
         this.load.image('2-3', 'assets/rooms final/room2/3.png');
         this.load.image('2-3_2', 'assets/rooms final/room2/3_2.png');
         this.load.image('2-4', 'assets/rooms final/room2/4_new.png');
@@ -127,7 +140,7 @@ export class LoadScene extends Phaser.Scene {
         // this.load.image('inv-monkey', 'assets/test room/monkeyinventory.png');
 
         this.load.image('flag', 'assets/items final/flag/inspect.png');
-        this.load.image('flag-flat', 'assets/items final/flag/game_piece.png')
+        this.load.image('flag-flat', 'assets/items final/flag/game_piece_2.png')
         this.load.image('inv-flag', 'assets/items final/flag/icon.png');
 
         this.load.image('key', 'assets/items final/key/inspect.png');
@@ -167,6 +180,11 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('button-pac', 'assets/buttons/pac.png');
         this.load.image('button-rupee', 'assets/buttons/arrow.png');
         this.load.image('button-heart', 'assets/buttons/heart.png');
+
+        this.load.spritesheet('dot', 'assets/dot.png', {
+            frameWidth: 48,
+            frameHeight: 13
+        });
 
 
 

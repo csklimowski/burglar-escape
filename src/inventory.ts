@@ -92,6 +92,8 @@ export class Inventory extends Phaser.GameObjects.Container {
             items[id]
         );
 
+        this.scene.sfx.pickUp.play();
+
         this.add(ii);
     }
 
@@ -141,10 +143,7 @@ export class Inventory extends Phaser.GameObjects.Container {
         this.scene.cursor.setTexture(ii.image.texture);
 
         this.putAwayArea.setVisible(false);
-        
-        if (!ii.item.id.startsWith('flag')) {
-            this.inspectArea.setVisible(true);
-        }
+        this.inspectArea.setVisible(true);
     }
 
     returnItem(ii: InventoryItem) {

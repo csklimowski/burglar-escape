@@ -30,8 +30,10 @@ export class Screwdriver extends Phaser.GameObjects.Container {
             if (input === 'puzzl3z') {
                 this.itemImage.setTexture('screwdriver-loosey');
                 this.scene.progress.add('screwdriver-admin');
+                this.scene.sfx.correct.play();
             } else {
-                this.scene.showDialogue(["I guess that wasn't it..."]);
+                this.scene.showDialogue(["I guess that wasn't it..."], null, null, 'burglar');
+                this.scene.sfx.incorrect.play();
             }
         });
         this.add(this.inputText);
@@ -45,6 +47,7 @@ export class Screwdriver extends Phaser.GameObjects.Container {
             } else if (this.itemImage.texture.key === 'screwdriver-tighty' || this.itemImage.texture.key === ('screwdriver-enter-password')) {
                 this.itemImage.setTexture('screwdriver-enter-password');
                 this.inputText.inputStr = '';
+                this.inputText.text.setText('Enter: ');
                 this.inputText.setVisible(true);
             }
         });
