@@ -215,7 +215,8 @@ export class Unfold extends Phaser.GameObjects.Container {
             if (numbers[0].number === 7 &&
                 numbers[1].number === 1 &&
                 numbers[2].number === 4 &&
-                numbers[3].number === 8) {
+                numbers[3].number === 8 &&
+                this.scene.progress.has('seven')) {
                 
                 this.scene.progress.add('unfold');
                 this.scene.bg.setTexture('2-8_2');

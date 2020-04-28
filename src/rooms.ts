@@ -139,7 +139,7 @@ export const rooms = {
     },
     '1-east-shelf-minesweeper': {
         bg: progress => progress.has('key') ? '1-6_5' :
-            progress.has('minesweeper') ? '1-6_4' : '1-6_3',
+            progress.has('minesweeper') ? '1-6_4' : '1-6_2',
         viewAreas: [
             {
                 bounds: [0, 0, 1280, 120],

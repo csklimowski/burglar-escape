@@ -122,6 +122,7 @@ export class Inventory extends Phaser.GameObjects.Container {
 
         if (this.inspecting.id === 'glasses' && this.scene.bg.texture.key === '2-7') {
             this.bg.setVisible(false);
+            this.scene.progress.add('seven');
             this.scene.bg.setTexture('2-7_2');
         }
     }
