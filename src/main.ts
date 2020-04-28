@@ -10,7 +10,6 @@ export class MainScene extends Phaser.Scene {
             key: 'main'
         });
     }
-    
 
     room: any;
     progress: Set<string>;
@@ -30,14 +29,14 @@ export class MainScene extends Phaser.Scene {
         this.room = rooms['1-west-tv'];
 
         this.sfx = {
-            toggle: this.sound.add('place-flag'),
+            toggle: this.sound.add('toggle', {volume: 0.5}),
             door: this.sound.add('door'),
-            correct: this.sound.add('pass-correct'),
+            correct: this.sound.add('pass-correct', {volume: 0.5}),
             incorrect: this.sound.add('pass-incorrect'),
-            pickUp: this.sound.add('pick-up'),
-            placeFlag: this.sound.add('toggle'),
+            pickUp: this.sound.add('pick-up', {volume: 0.5}),
+            placeFlag: this.sound.add('place-flag', {volume: 0.5}),
             slide: this.sound.add('slide'),
-            solved: this.sound.add('solved'),
+            solved: this.sound.add('solved', {volume: 0.5}),
         };
 
         this.bg = this.add.image(640, 360, this.room.bg(this.progress));
@@ -190,58 +189,4 @@ export class MainScene extends Phaser.Scene {
         this.inDialogue = true;
         this.dialogue.display(lines, onStart, onFinish, character);
     }
-
-    update(time: number, delta: number) {
-        // if (this.fadeIn) {
-        //     this.curtain.setAlpha(this.curtain.alpha - 0.0005*delta)
-        //     if (this.curtain.alpha <= 0) {
-        //         this.fadeIn = false;
-        //         this.charSprite.play(this.sequence[0].anim);
-        //         this.dialogue.display(createDialogueData(currentLevel[this.levelIndex].start[0]));
-        //     }
-        // } else if (this.fadeOut) {
-        //     this.curtain.setAlpha(this.curtain.alpha + 0.0005*delta)
-        //     if (this.curtain.alpha >= 1) {
-        //         if (currentLevel === part1) {
-        //             currentLevel = part2;
-        //             this.fadeOut = false;
-        //             this.scene.restart();
-        //         }
-        //     }
-        // }
-
-        // if (this.charSprite.anims.currentAnim) {
-        //     if (this.charSprite.anims.currentAnim.key.charAt(0) === 'r') {
-        //         this.charSprite.setY(360 + 10*Math.sin(time/500));
-        //     } else {
-        //         this.charSprite.setY(360);
-        //     }
-        // }
-
-        // this.charSprite.update(time, delta);
-        // this.editor.update(time, delta);
-        // this.dialogue.update(time, delta);
-    }
 }
-
-
-// function createDialogueData(object): DialogueData {
-
-//     let words: WordData[] = [];
-
-//     for (let text of object.text.split(' ')) {
-//         words.push({
-//             text,
-//             emphasis: 0,
-//             fontSize: FONT_REG,
-//             oy: 0
-//         });
-//     }
-
-//     return {
-//         words,
-//         color: object.color || 0xffffff,
-//         x: 650 - (object.text.length*12),
-//         y: 50
-//     };
-// }

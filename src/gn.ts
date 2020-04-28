@@ -62,7 +62,7 @@ export class IntroScene extends Phaser.Scene {
         this.cursor.setOrigin(0, 0);
         this.updateCursor();
 
-        this.music = this.sound.add('music-ending');
+        this.music = this.sound.add('music-ending', {volume: 0.8});
         this.afterTransition();
 
         
@@ -175,7 +175,7 @@ export class EndScene extends Phaser.Scene {
         this.cursor.setOrigin(0, 0);
         this.updateCursor();
 
-        this.sound.add('music-ending').play();
+        this.sound.add('music-ending', {volume: 0.8}).play();
         this.afterTransition();
 
         this.input.on(Phaser.Input.Events.POINTER_MOVE, this.updateCursor, this);

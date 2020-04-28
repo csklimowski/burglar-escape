@@ -273,6 +273,7 @@ export const rooms = {
                     onClick: (x, y, holding) => {
                         if (holding && holding.item.id === 'screwdriver') {
                             if (scene.progress.has('screwdriver-admin')) {
+                                scene.sfx.toggle.play();
                                 scene.progress.add('unscrew');
                             } else {
                                 scene.showDialogue(["That's weird, it's only getting tighter."], null, null, 'burglar');

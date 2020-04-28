@@ -164,13 +164,6 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('button-rupee', 'assets/buttons/arrow.png');
         this.load.image('button-heart', 'assets/buttons/heart.png');
 
-        this.load.spritesheet('dot', 'assets/dot.png', {
-            frameWidth: 48,
-            frameHeight: 13
-        });
-
-
-
         // GRAPHIC NOVEL
         
         this.load.image('title-1', 'assets/graphic novel/title.png');
