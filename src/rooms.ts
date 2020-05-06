@@ -275,6 +275,7 @@ export const rooms = {
                             if (scene.progress.has('screwdriver-admin')) {
                                 scene.sfx.toggle.play();
                                 scene.progress.add('unscrew');
+                                scene.inventory.destroyHeldItem();
                             } else {
                                 scene.showDialogue(["That's weird, it's only getting tighter."], null, null, 'burglar');
                             }
@@ -603,8 +604,16 @@ export const rooms = {
                 cursor: 'cursor-right'
             },
             {
-                bounds: [440, 250, 390, 210],
+                bounds: [440, 175, 380, 160],
                 goTo: '2-north-panel'
+            },
+            {
+                bounds: [845, 485, 90, 110],
+                goTo: '2-north-bin'
+            },
+            {
+                bounds: [860, 180, 50, 60],
+                goTo: '2-north-thumbtack'
             }
         ]
     },
@@ -638,6 +647,41 @@ export const rooms = {
                 prereq: 'snakes'
             }
         ],
+    },
+    '2-north-thumbtack': {
+        bg: () => '2-12',
+        viewAreas: [
+            {
+                bounds: [0, 0, 1280, 200],
+                goTo: '2-north',
+                cursor: 'cursor-back'
+            }
+        ]
+    },
+    '2-north-bin': {
+        bg: () => '2-13',
+        viewAreas: [
+            {
+                bounds: [0, 0, 1280, 200],
+                goTo: '2-north',
+                cursor: 'cursor-back'
+            },
+            {
+                bounds: [560, 360, 170, 170],
+                goTo: '2-north-bin-paper',
+                cursor: 'cursor-click'
+            }
+        ]
+    },
+    '2-north-bin-paper': {
+        bg: () => '2-13_2',
+        viewAreas: [
+            {
+                bounds: [0, 0, 1280, 200],
+                goTo: '2-north',
+                cursor: 'cursor-back'
+            }
+        ]
     },
     '2-east': {
         bg: () => '2-1',

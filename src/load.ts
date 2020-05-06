@@ -74,10 +74,10 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('1-15', 'assets/rooms final/room1/15.png');
 
         this.load.image('2-1', 'assets/rooms final/room2/1.png');
-        this.load.image('2-2', 'assets/rooms final/room2/2.png');
-        this.load.image('2-2_2', 'assets/rooms final/room2/2_2.png');
-        this.load.image('2-2_3', 'assets/rooms final/room2/2_3.png');
-        this.load.image('2-2_4', 'assets/rooms final/room2/2_4.png');
+        this.load.image('2-2', 'assets/rooms final/room2/2_new.png');
+        this.load.image('2-2_2', 'assets/rooms final/room2/2_2new.png');
+        this.load.image('2-2_3', 'assets/rooms final/room2/2_3new.png');
+        this.load.image('2-2_4', 'assets/rooms final/room2/2_4new.png');
         this.load.image('2-3', 'assets/rooms final/room2/3.png');
         this.load.image('2-3_2', 'assets/rooms final/room2/3_2.png');
         this.load.image('2-4', 'assets/rooms final/room2/4_new.png');
@@ -87,7 +87,7 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('2-6_3', 'assets/rooms final/room2/6_3.png');
         this.load.image('2-7', 'assets/rooms final/room2/7.png');
         this.load.image('2-7_2', 'assets/rooms final/room2/7_2.png');
-        this.load.image('2-8', 'assets/rooms final/room2/8.png');
+        this.load.image('2-8', 'assets/rooms final/room2/8_new.png');
         this.load.image('2-8_2', 'assets/rooms final/room2/8_2.png');
         this.load.image('2-8_3', 'assets/rooms final/room2/8_3.png');
         this.load.image('2-8_4', 'assets/rooms final/room2/8_4.png');
@@ -95,6 +95,9 @@ export class LoadScene extends Phaser.Scene {
         this.load.image('2-10', 'assets/rooms final/room2/10.png');
         this.load.image('2-11', 'assets/rooms final/room2/11.png');
         this.load.image('2-11_2', 'assets/rooms final/room2/11_2.png');
+        this.load.image('2-12', 'assets/rooms final/room2/12.png');
+        this.load.image('2-13', 'assets/rooms final/room2/13.png');
+        this.load.image('2-13_2', 'assets/rooms final/room2/13_2.png');
 
         // INVENTORY
         this.load.image('inv-bar', 'assets/inv-bar.png');
